@@ -1,0 +1,28 @@
+<mat-card class="post">
+  <mat-card-header>
+    <mat-card-title class="creator-name">{{ creatorName }}</mat-card-title>
+    <mat-card-subtitle>{{
+      getDate() | date : "MMM d, y, H:mm "
+    }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="comment"> {{ postData.comment }} </mat-card-content>
+  <img
+    *ngIf="postData.imageUrl"
+    class="image"
+    mat-card-image
+    src="{{ postData.imageUrl }}"
+    alt="img"
+  />
+  <mat-card-actions>
+    <mat-icon (click)="onReplyClick()" class="action-item" color="warn"
+      >chat_bubble_outline
+    </mat-icon>
+    <div class="likes">
+      <mat-icon (click)="onLikeClick()" class="action-item" color="warn"
+        >{{ isLiked ? "favorite" : "favorite_border" }}favorite_border</mat-icon
+      >
+      <div class="likes-number">{{ likes }}</div>
+    </div>
+    <mat-icon class="action-item" color="warn">save</mat-icon>
+  </mat-card-actions>
+</mat-card>

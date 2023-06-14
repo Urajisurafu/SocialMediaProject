@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{ message.info }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="message">
+    <div class="message-text">{{ message.message }}</div>
+    <div class="message-button">
+      <span class="spacer"></span>
+      <button mat-flat-button color="warn" (click)="closeClick()">Close</button>
+    </div>
+  </mat-card-content>
+</mat-card>

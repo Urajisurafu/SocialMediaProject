@@ -1,0 +1,47 @@
+.home-page{
+  width: 100%;
+  height: 100%;
+}
+
+.home-page-landing{
+  width: 100%;
+  height: 100%;
+  background-image: url("../../images/home_background.jpg");
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100%;
+  min-height: 800px;
+}
+
+.landing-left{
+  display: flex;
+  color: white;
+  justify-content: center;
+  align-items: center;
+
+  &-content{
+    text-align: right;
+    padding: 1em 1em 1em 3em;
+
+    h1{
+      font-size: 5em;
+    }
+
+    p{
+      font-size: 3em;
+    }
+
+    button{
+      color: white;
+      font-size: 2em;
+      padding: .5em;
+      background-color: #f44336;
+    }
+
+    button[disabled]{
+      background-color: gainsboro;
+    }
+  }
+}

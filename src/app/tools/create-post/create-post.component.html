@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Create post</mat-card-title>
+  </mat-card-header>
+
+  <form [formGroup]="createPostForm" (submit)="onPostClick()">
+    <textarea
+      formControlName="message"
+      placeholder="Type Message..."
+      [ngClass]="{ error: checkMessage() }"
+    ></textarea>
+
+    <div *ngIf="selectedImageFile" class="post-preview">
+      <img id="post-preview-image" />
+    </div>
+
+    <mat-card-actions align="end">
+      <button type="button" mat-button color="warn">
+        <label for="photo-upload">
+          <input
+            #photoSelector
+            (change)="photoSelected(photoSelector)"
+            id="photo-upload"
+            type="file"
+            accept="image/*"
+          />
+          <mat-icon>insert_photo</mat-icon>
+        </label>
+      </button>
+      <button type="submit" mat-flat-button color="warn">Post</button>
+    </mat-card-actions>
+  </form>
+</mat-card>

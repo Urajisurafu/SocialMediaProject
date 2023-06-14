@@ -1,0 +1,39 @@
+<mat-card class="comments">
+  <mat-card-header> Comments </mat-card-header>
+  <mat-card-content class="reply-box">
+    <div
+      *ngFor="let comment of comments"
+      [ngClass]="{
+        'comment-container': true,
+        'creator-comment-container': isCommentCreator(comment)
+      }"
+    >
+      <div>
+        <div class="comment-name">{{ comment.creatorName }}</div>
+        <div
+          [ngClass]="{
+            comment: true,
+            'creator-comment': isCommentCreator(comment)
+          }"
+        >
+          {{ comment.comment }}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <form
+    class="reply-action-bar"
+    [formGroup]="replyForm"
+    (submit)="onSendClick()"
+  >
+    <button type="submit" mat-flat-button color="primary">
+      <mat-icon>send</mat-icon>
+    </button>
+    <input
+      formControlName="comment"
+      [ngClass]="{ error: checkComment() }"
+      placeholder="Comment..."
+    />
+  </form>
+</mat-card>

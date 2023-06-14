@@ -1,0 +1,30 @@
+<div class="profile" [ngClass]="{ active: show, idle: !show }">
+  <form
+    class="profile-content"
+    [formGroup]="profileForm"
+    (submit)="onContinueClick()"
+  >
+    <input formControlName="nickname" placeholder="Nickname" />
+    <div
+      *ngIf="
+        profileForm.get('nickname')?.invalid &&
+        profileForm.get('nickname')?.touched
+      "
+    >
+      <small class="error">Nickname field cannot be empty</small>
+    </div>
+    <textarea
+      formControlName="description"
+      placeholder="Description"
+    ></textarea>
+    <div
+      *ngIf="
+        profileForm.get('description')?.invalid &&
+        profileForm.get('description')?.touched
+      "
+    >
+      <small class="error">Description field cannot be empty</small>
+    </div>
+    <button mat-flat-button color="warn" type="submit">Continue</button>
+  </form>
+</div>

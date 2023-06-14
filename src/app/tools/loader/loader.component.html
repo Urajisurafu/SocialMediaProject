@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{ message.info }}
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="message">
+    <div class="message-text">{{ message.message }}</div>
+    <mat-progress-spinner
+      mode="indeterminate"
+      color="primary"
+      diameter="32"
+      strokeWidth="4"
+    ></mat-progress-spinner>
+  </mat-card-content>
+</mat-card>

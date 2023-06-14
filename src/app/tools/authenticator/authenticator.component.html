@@ -1,0 +1,152 @@
+<div class="authenticator">
+  <mat-card class="authenticator-content">
+    <mat-card-header>
+      <mat-card-title>{{ getStateText() }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="authenticatorForm" (submit)="submitForm($event)">
+        <div *ngIf="isLoginState()" formGroupName="login">
+          <input
+            placeholder="Email"
+            formControlName="loginEmail"
+            autocomplete="email"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('login.loginEmail')?.invalid &&
+              authenticatorForm.get('login.loginEmail')?.touched
+            "
+          >
+            <small class="error">Please, enter a valid email.</small>
+          </div>
+          <input
+            placeholder="Password"
+            type="password"
+            formControlName="loginPassword"
+            autocomplete="current-password"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('login.loginPassword')?.invalid &&
+              authenticatorForm.get('login.loginPassword')?.touched
+            "
+          >
+            <small class="error">
+              The field must have at least
+              {{ minLength }}
+              characters.
+            </small>
+          </div>
+          <button
+            mat-flat-button
+            color="warn"
+            type="submit"
+            (click)="onLoginSubmitClick()"
+          >
+            Login
+          </button>
+        </div>
+
+        <div *ngIf="isRegisterState()" formGroupName="register">
+          <input
+            placeholder="Email"
+            formControlName="registerEmail"
+            autocomplete="email"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('register.registerEmail')?.invalid &&
+              authenticatorForm.get('register.registerEmail')?.touched
+            "
+          >
+            <small class="error">Please, enter a valid email.</small>
+          </div>
+          <input
+            placeholder="Password"
+            type="password"
+            formControlName="registerPassword"
+            autocomplete="new-password"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('register.registerPassword')?.invalid &&
+              authenticatorForm.get('register.registerPassword')?.touched
+            "
+          >
+            <small class="error">
+              The field must have at least
+              {{ minLength }}
+              characters.
+            </small>
+          </div>
+          <input
+            placeholder="Confirm password"
+            type="password"
+            formControlName="registerConfirmPassword"
+            autocomplete="new-password"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('register.registerConfirmPassword')?.touched
+            "
+          >
+            <small
+              class="error"
+              *ngIf="
+                authenticatorForm.get('register.registerConfirmPassword')
+                  ?.invalid
+              "
+            >
+              The field must have at least
+              {{ minLength }}
+              characters.
+            </small>
+            <small
+              class="error"
+              *ngIf="authenticatorForm.get('register')?.errors?.['fieldsMatch']"
+              >Password must match
+            </small>
+          </div>
+          <button
+            mat-flat-button
+            color="warn"
+            (click)="onRegisterSubmitClick()"
+          >
+            Create
+          </button>
+        </div>
+
+        <div *ngIf="isForgotPasswordState()" formGroupName="forgot">
+          <input
+            placeholder="Email"
+            formControlName="resetEmail"
+            autocomplete="email"
+          />
+          <div
+            *ngIf="
+              authenticatorForm.get('forgot.resetEmail')?.invalid &&
+              authenticatorForm.get('forgot.resetEmail')?.touched
+            "
+          >
+            <small class="error">Please, enter a valid email.</small>
+          </div>
+
+          <button mat-flat-button color="warn" (click)="onResetClick()">
+            Reset
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-flat-button (click)="onForgotPasswordButton()">
+        Forgot Password
+      </button>
+      <button mat-flat-button (click)="onCreateAccountButton()">
+        Create an Account
+      </button>
+      <button mat-flat-button (click)="onLoginButton()">Login</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

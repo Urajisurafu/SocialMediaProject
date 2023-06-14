@@ -1,0 +1,17 @@
+.email-verification{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button{
+    margin: 0 20px;
+  }
+}

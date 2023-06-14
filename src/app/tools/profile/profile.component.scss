@@ -1,0 +1,43 @@
+.profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  background-color: #313131;
+  z-index: 9;
+  transition-duration: .5s;
+  overflow: hidden;
+
+  &-content{
+    width: 100%;
+    max-width: 500px;
+    padding: 2em;
+    box-sizing: border-box;
+
+    input, textarea{
+      width: 100%;
+      padding: 1em;
+      border-radius: 1em;
+      margin-top: .5em;
+      resize: none;
+      outline: none;
+      border: 1px solid gray;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.error{
+  color: #f44336;
+}
+
+.active{
+  width: 100vw;
+}
+
+.idle{
+  width: 0;
+}

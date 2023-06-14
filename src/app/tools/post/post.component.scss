@@ -1,0 +1,37 @@
+.post{
+  margin-top: 2em;
+  background-color: #f1f1f1;
+}
+
+.creator-name{
+  font-size: 24px;
+}
+
+.action-item{
+  margin-left: .5em;
+  cursor: pointer;
+}
+
+.comment{
+  padding: 10px;
+  margin: 10px 10px 0 10px;
+  border-radius: 1em;
+  background-color: #c4c4c4;
+}
+
+.image{
+  margin: 10px;
+  height: auto;
+}
+
+.likes{
+  width: auto;
+  display: flex;
+  justify-content: center;
+
+  &-number{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
