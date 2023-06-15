@@ -35,8 +35,8 @@ export class PostService {
       .get()
       .subscribe((data) => {
         const userData = data.data()!;
-        this.creatorName = userData.publicName;
-        this.creatorDescription = userData.description;
+        this.creatorName = userData?.publicName || '';
+        this.creatorDescription = userData?.description || '';
       });
   }
 

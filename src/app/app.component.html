@@ -1,34 +1,4 @@
-<div class="nav-bar">
-  <div class="nav-bar-content">
-    <div class="nav-bar-left">
-      <a
-        target="_blank"
-        href="https://www.instagram.com/vlladyaa/"
-        class="nav-bar-items link"
-        >Instagram</a
-      >
-    </div>
-    <div *ngIf="getIsLoggedIn() !== undefined" class="nav-bar-right">
-      <div
-        *ngIf="!getIsLoggedIn()"
-        class="nav-bar-items link"
-        (click)="onLoginClick()"
-      >
-        Login
-      </div>
-      <div *ngIf="getIsLoggedIn() && getUserHasProfile()" class="nav-bar-items">
-        Hello, {{ getUserName() }}
-      </div>
-      <div
-        *ngIf="getIsLoggedIn()"
-        class="nav-bar-items link"
-        (click)="onLogoutClick()"
-      >
-        Logout
-      </div>
-    </div>
-  </div>
-</div>
+<app-navbar></app-navbar>
 
 <router-outlet></router-outlet>
 

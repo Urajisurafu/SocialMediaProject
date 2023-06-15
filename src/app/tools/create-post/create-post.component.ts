@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { finalize, tap } from 'rxjs';
+
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -7,15 +10,13 @@ import {
 } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
+import { LoaderComponent } from '../loader/loader.component';
+
 import { UserDataService } from '../../services/user-data.service';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { PostData } from '../../interfaces/post-data.interface';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InfoModalComponent } from '../info-modal/info-modal.component';
-import { finalize, tap } from 'rxjs';
-import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-create-post',

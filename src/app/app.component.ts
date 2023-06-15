@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AuthenticatorComponent } from './tools/authenticator/authenticator.component';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-
 import { UserDataService } from './services/user-data.service';
-
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'SocialMediaProject';
 
-  constructor(
-    private userDataService: UserDataService,
-    private loginSheet: MatBottomSheet,
-    private afAuth: AngularFireAuth,
-    private router: Router
-  ) {
+  constructor(private userDataService: UserDataService) {
     this.userDataService.checkLoginStatus();
   }
 
@@ -31,18 +20,5 @@ export class AppComponent {
 
   getUserHasProfile() {
     return this.userDataService.userHasProfile;
-  }
-
-  getUserName() {
-    return this.userDataService.userInfo?.publicName || '';
-  }
-
-  onLoginClick() {
-    this.loginSheet.open(AuthenticatorComponent);
-  }
-
-  onLogoutClick() {
-    this.router.navigate(['']);
-    this.afAuth.signOut();
   }
 }

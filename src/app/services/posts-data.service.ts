@@ -3,9 +3,7 @@ import { Observable } from 'rxjs';
 import { PostData } from '../interfaces/post-data.interface';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PostsDataService {
   posts: PostData[] = [];
   constructor(private firestore: AngularFirestore) {}

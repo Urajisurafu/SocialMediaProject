@@ -1,6 +1,9 @@
 .mat-toolbar{
+  display: flex;
+  align-items: center;
   width: 200px;
   cursor: pointer;
+  background-color: rgba(1, 17, 161, 0.8);
 }
 
 .mdc-list-item{

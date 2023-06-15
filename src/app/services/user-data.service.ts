@@ -12,9 +12,7 @@ import {
 import { UserData } from '../interfaces/user-data.interface';
 import { Auth, getAuth } from 'firebase/auth';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class UserDataService {
   private collection: AngularFirestoreCollection<UserData>;
   userHasProfile: boolean = true;

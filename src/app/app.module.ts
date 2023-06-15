@@ -3,12 +3,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+
+import { MaterialModule } from './modules/material/material.module';
+
+import { UserDataService } from './services/user-data.service';
+import { PostsDataService } from './services/posts-data.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -22,18 +27,8 @@ import { ReplyComponent } from './tools/reply/reply.component';
 import { InfoModalComponent } from './tools/info-modal/info-modal.component';
 import { LoaderComponent } from './tools/loader/loader.component';
 import { SidebarComponent } from './tools/sidebar/sidebar.component';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChangeDataModalComponent } from './tools/change-data-modal/change-data-modal.component';
-import { MatMenuModule } from '@angular/material/menu';
+import { NavbarComponent } from './tools/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +45,7 @@ import { MatMenuModule } from '@angular/material/menu';
     LoaderComponent,
     SidebarComponent,
     ChangeDataModalComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,18 +56,9 @@ import { MatMenuModule } from '@angular/material/menu';
     AngularFireStorageModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatButtonModule,
-    MatBottomSheetModule,
-    MatCardModule,
-    MatDialogModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatListModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
+    MaterialModule,
   ],
-  providers: [],
+  providers: [UserDataService, PostsDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
