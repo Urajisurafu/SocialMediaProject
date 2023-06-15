@@ -4,7 +4,11 @@
       <div class="landing-left-content">
         <h1>Social Media App Platform</h1>
         <p>Some text</p>
-        <button mat-flat-button [disabled]='userDataService.isLoggedIn'(click)="onGetStartedClick()">
+        <button
+          mat-flat-button
+          [disabled]="getIsLoggedIn()"
+          (click)="onGetStartedClick()"
+        >
           Get Started
         </button>
       </div>

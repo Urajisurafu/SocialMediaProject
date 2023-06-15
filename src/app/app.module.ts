@@ -8,6 +8,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -19,6 +20,8 @@ import { CreatePostComponent } from './tools/create-post/create-post.component';
 import { PostComponent } from './tools/post/post.component';
 import { ReplyComponent } from './tools/reply/reply.component';
 import { InfoModalComponent } from './tools/info-modal/info-modal.component';
+import { LoaderComponent } from './tools/loader/loader.component';
+import { SidebarComponent } from './tools/sidebar/sidebar.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -26,7 +29,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoaderComponent } from './tools/loader/loader.component';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChangeDataModalComponent } from './tools/change-data-modal/change-data-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -41,6 +48,8 @@ import { LoaderComponent } from './tools/loader/loader.component';
     ReplyComponent,
     InfoModalComponent,
     LoaderComponent,
+    SidebarComponent,
+    ChangeDataModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,13 +58,18 @@ import { LoaderComponent } from './tools/loader/loader.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     MatButtonModule,
     MatBottomSheetModule,
     MatCardModule,
     MatDialogModule,
     MatIconModule,
-    ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatListModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

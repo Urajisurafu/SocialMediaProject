@@ -8,22 +8,19 @@
         >Instagram</a
       >
     </div>
-    <div *ngIf="userDataService.isLoggedIn !== undefined" class="nav-bar-right">
+    <div *ngIf="getIsLoggedIn() !== undefined" class="nav-bar-right">
       <div
-        *ngIf="!userDataService.isLoggedIn"
+        *ngIf="!getIsLoggedIn()"
         class="nav-bar-items link"
         (click)="onLoginClick()"
       >
         Login
       </div>
-      <div
-        *ngIf="userDataService.isLoggedIn && userDataService.userHasProfile"
-        class="nav-bar-items"
-      >
-        Hello, {{ userDataService.userName }}
+      <div *ngIf="getIsLoggedIn() && getUserHasProfile()" class="nav-bar-items">
+        Hello, {{ getUserName() }}
       </div>
       <div
-        *ngIf="userDataService.isLoggedIn"
+        *ngIf="getIsLoggedIn()"
         class="nav-bar-items link"
         (click)="onLogoutClick()"
       >
@@ -35,6 +32,4 @@
 
 <router-outlet></router-outlet>
 
-<app-profile
-  [show]="userDataService.isLoggedIn && !userDataService.userHasProfile"
-></app-profile>
+<app-profile [show]="getIsLoggedIn() && !getUserHasProfile()"></app-profile>

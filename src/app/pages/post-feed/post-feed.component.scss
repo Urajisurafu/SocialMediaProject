@@ -1,6 +1,6 @@
 .news-line{
-  display: block;
-  padding-top: 3em;
+  display: flex;
+  padding-top: 5em;
   width: 100%;
   min-height: 100%;
   background: url(../../images/post-feed2.jpg) no-repeat center center fixed;
@@ -16,7 +16,6 @@
 
 .post-feed{
   max-width: 500px;
-  padding-top: 3em;
   margin-left: auto;
   margin-right: auto;
 }

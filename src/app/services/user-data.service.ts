@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
+  AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 
@@ -15,15 +16,32 @@ import { Auth, getAuth } from 'firebase/auth';
   providedIn: 'root',
 })
 export class UserDataService {
+  private collection: AngularFirestoreCollection<UserData>;
   userHasProfile: boolean = true;
-  userName: string = '';
+  userInfo!: UserData;
   isLoggedIn!: boolean;
 
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
     private firestore: AngularFirestore
-  ) {}
+  ) {
+    this.collection = this.firestore.collection<UserData>('Users');
+  }
+
+  updateDocumentField(
+    collectionPath: string,
+    documentId: string,
+    field: string,
+    value: any
+  ): Promise<void> {
+    const documentRef = this.firestore
+      .collection(collectionPath)
+      .doc(documentId);
+    const updateData = { [field]: value };
+
+    return documentRef.update(updateData);
+  }
 
   getCurrentUserId(): string {
     const authInstance: Auth = getAuth();
@@ -31,7 +49,7 @@ export class UserDataService {
     return user ? user.uid : '';
   }
 
-  async getUserProfile() {
+  async getUpdatedUserProfile() {
     const user = await this.afAuth.currentUser;
 
     const documentRef: AngularFirestoreDocument<UserData> = this.firestore
@@ -42,11 +60,16 @@ export class UserDataService {
         this.userHasProfile = doc.exists;
         if (doc.exists) {
           this.router.navigate(['postFeed']);
-          this.userName = doc.data()!.publicName;
+
+          this.userInfo = {
+            userId: doc.data()!.userId,
+            publicName: doc.data()!.publicName,
+            description: doc.data()!.description,
+          };
         }
       },
-      (error) => {
-        console.error('Ошибка при получении документа');
+      () => {
+        console.error('Error getting document');
       }
     );
   }
@@ -56,12 +79,28 @@ export class UserDataService {
       this.isLoggedIn = !!user;
       if (user) {
         if (user.emailVerified) {
-          this.getUserProfile();
+          this.getUpdatedUserProfile();
         } else {
           user.sendEmailVerification();
           this.router.navigate(['emailVerification']);
         }
       }
     });
+  }
+
+  createUser(nickname: string, description: string) {
+    this.collection
+      .doc(this.getCurrentUserId())
+      .set({
+        publicName: nickname,
+        description: description,
+        userId: this.getCurrentUserId(),
+      })
+      .then(() => {
+        this.getUpdatedUserProfile();
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
   }
 }

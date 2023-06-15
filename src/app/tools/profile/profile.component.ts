@@ -1,14 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from '@angular/fire/compat/firestore';
-
 import { UserDataService } from '../../services/user-data.service';
 
-import { UserData } from '../../interfaces/user-data.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -21,15 +14,7 @@ export class ProfileComponent {
 
   profileForm: FormGroup;
 
-  private collection: AngularFirestoreCollection<UserData>;
-
-  constructor(
-    private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore,
-    private userDataService: UserDataService
-  ) {
-    this.collection = this.firestore.collection<UserData>('Users');
-
+  constructor(private userDataService: UserDataService) {
     this.profileForm = new FormGroup({
       nickname: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
@@ -44,19 +29,7 @@ export class ProfileComponent {
     description?.markAsTouched();
 
     if (nickname && description && !nickname.errors && !description.errors) {
-      this.collection
-        .doc(this.userDataService.getCurrentUserId())
-        .set({
-          publicName: nickname.value,
-          description: description.value,
-          userId: this.userDataService.getCurrentUserId(),
-        })
-        .then(() => {
-          this.userDataService.getUserProfile();
-        })
-        .catch((error) => {
-          console.error('Error writing document: ', error);
-        });
+      this.userDataService.createUser(nickname.value, description.value);
     }
   }
 }

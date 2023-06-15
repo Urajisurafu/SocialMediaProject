@@ -13,9 +13,13 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 })
 export class HomeComponent {
   constructor(
-    public userDataService: UserDataService,
+    private userDataService: UserDataService,
     private loginSheet: MatBottomSheet
   ) {}
+
+  getIsLoggedIn() {
+    return this.userDataService.isLoggedIn;
+  }
   onGetStartedClick() {
     this.loginSheet.open(AuthenticatorComponent);
   }

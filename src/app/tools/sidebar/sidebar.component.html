@@ -1,0 +1,11 @@
+<mat-toolbar color="primary" [matMenuTriggerFor]="menu">
+  <mat-icon>settings</mat-icon>
+  Settings
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="ChangeNicknameClick()">Change nickname</button>
+  <button mat-menu-item (click)="ChangeDescriptionClick()">
+    Change description
+  </button>
+</mat-menu>

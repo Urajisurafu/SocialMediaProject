@@ -1,13 +1,10 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Component, OnInit } from '@angular/core';
 
 import { CreatePostComponent } from '../../tools/create-post/create-post.component';
 
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
 
-import { PostData } from '../../interfaces/post-data.interface';
+import { PostsDataService } from '../../services/posts-data.service';
 
 @Component({
   selector: 'app-post-feed',
@@ -15,13 +12,19 @@ import { PostData } from '../../interfaces/post-data.interface';
   styleUrls: ['./post-feed.component.scss'],
 })
 export class PostFeedComponent implements OnInit {
-  posts: PostData[] = [];
   limit: number = 3;
-  constructor(private firestore: AngularFirestore, private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private postsDataService: PostsDataService
+  ) {}
 
   ngOnInit() {
-    this.getPosts();
+    this.postsDataService.getPosts();
     window.addEventListener('scroll', this.onScroll.bind(this));
+  }
+
+  getPosts() {
+    return this.postsDataService.posts.slice(0, this.limit);
   }
 
   onScroll(): void {
@@ -34,21 +37,5 @@ export class PostFeedComponent implements OnInit {
 
   onCreatePostClick() {
     this.dialog.open(CreatePostComponent);
-  }
-
-  getLimitedAndSortedCollection(
-    collectionPath: string
-  ): Observable<PostData[]> {
-    const documentRef = this.firestore.collection<PostData>(
-      collectionPath,
-      (ref) => ref.orderBy('timestamp', 'desc')
-    );
-    return documentRef.valueChanges();
-  }
-
-  getPosts() {
-    this.getLimitedAndSortedCollection('Posts').subscribe((data) => {
-      this.posts = data;
-    });
   }
 }

@@ -1,6 +1,6 @@
 <mat-card class="post">
   <mat-card-header>
-    <mat-card-title class="creator-name">{{ creatorName }}</mat-card-title>
+    <mat-card-title class="creator-name">{{ getCreatorName() }}</mat-card-title>
     <mat-card-subtitle>{{
       getDate() | date : "MMM d, y, H:mm "
     }}</mat-card-subtitle>
@@ -14,15 +14,22 @@
     alt="img"
   />
   <mat-card-actions>
-    <mat-icon (click)="onReplyClick()" class="action-item" color="warn"
-      >chat_bubble_outline
+    <mat-icon (click)="onReplyClick()" class="action-item" color="warn">
+      chat_bubble_outline
     </mat-icon>
     <div class="likes">
-      <mat-icon (click)="onLikeClick()" class="action-item" color="warn"
-        >{{ isLiked ? "favorite" : "favorite_border" }}favorite_border</mat-icon
-      >
-      <div class="likes-number">{{ likes }}</div>
+      <mat-icon (click)="onLikeClick()" class="action-item" color="warn">
+        {{ getIsLiked() ? "favorite" : "favorite_border" }}favorite_border
+      </mat-icon>
+      <div class="likes-number">{{ getLikes() }}</div>
     </div>
-    <mat-icon class="action-item" color="warn">save</mat-icon>
+    <mat-icon
+      *ngIf="postData.imageUrl"
+      (click)="downloadImageClick()"
+      class="action-item"
+      color="warn"
+    >
+      open_in_new
+    </mat-icon>
   </mat-card-actions>
 </mat-card>

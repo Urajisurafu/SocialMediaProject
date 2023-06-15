@@ -2,7 +2,7 @@
   <mat-card-header> Comments </mat-card-header>
   <mat-card-content class="reply-box">
     <div
-      *ngFor="let comment of comments"
+      *ngFor="let comment of getPostComments()"
       [ngClass]="{
         'comment-container': true,
         'creator-comment-container': isCommentCreator(comment)

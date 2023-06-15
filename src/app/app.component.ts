@@ -17,12 +17,24 @@ export class AppComponent {
   title = 'SocialMediaProject';
 
   constructor(
-    public userDataService: UserDataService,
+    private userDataService: UserDataService,
     private loginSheet: MatBottomSheet,
     private afAuth: AngularFireAuth,
     private router: Router
   ) {
     this.userDataService.checkLoginStatus();
+  }
+
+  getIsLoggedIn() {
+    return this.userDataService.isLoggedIn;
+  }
+
+  getUserHasProfile() {
+    return this.userDataService.userHasProfile;
+  }
+
+  getUserName() {
+    return this.userDataService.userInfo?.publicName || '';
   }
 
   onLoginClick() {
