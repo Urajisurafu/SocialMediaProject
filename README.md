@@ -36,7 +36,7 @@ Each user can create their own post. Once created, the posts page will display t
 
 ![Screenshot_11](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/1d09e187-cd24-4291-8cf3-6fb0de28aee4)
 
-![Screenshot_12](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/1655029a-458)
+![Screenshot_12](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/f1c3b53f-345b-4f31-a24f-b37752c2af91)
 
 ![Screenshot_13](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/50c4fc1d-a671-4af4-a6ee-ec664065abe4)
 0-4c20-ae1e-2f0375b61a8a)
