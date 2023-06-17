@@ -17,7 +17,7 @@ export class UserDataService {
   private collection: AngularFirestoreCollection<UserData>;
   userHasProfile: boolean = true;
   userInfo!: UserData;
-  isLoggedIn!: boolean;
+  isLoggedIn: boolean = false;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -31,7 +31,7 @@ export class UserDataService {
     collectionPath: string,
     documentId: string,
     field: string,
-    value: any
+    value: string
   ): Promise<void> {
     const documentRef = this.firestore
       .collection(collectionPath)
@@ -39,6 +39,10 @@ export class UserDataService {
     const updateData = { [field]: value };
 
     return documentRef.update(updateData);
+  }
+
+  resetUserName() {
+    this.userInfo.publicName = '';
   }
 
   getCurrentUserId(): string {
@@ -94,6 +98,18 @@ export class UserDataService {
         description: description,
         userId: this.getCurrentUserId(),
       })
+      .then(() => {
+        this.getUpdatedUserProfile();
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
+  }
+
+  deleteUser() {
+    this.collection
+      .doc(this.userInfo.userId)
+      .delete()
       .then(() => {
         this.getUpdatedUserProfile();
       })

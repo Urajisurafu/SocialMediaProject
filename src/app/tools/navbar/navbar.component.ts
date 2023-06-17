@@ -37,6 +37,7 @@ export class NavbarComponent {
 
   onLogoutClick() {
     this.router.navigate(['']);
+    this.userDataService.resetUserName();
     this.afAuth.signOut();
   }
 }

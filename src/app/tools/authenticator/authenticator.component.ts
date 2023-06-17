@@ -120,9 +120,7 @@ export class AuthenticatorComponent {
       this.afAuth
         .createUserWithEmailAndPassword(email.value, password.value)
         .then(() => {
-          this.afAuth.currentUser.then(() => {
-            this.router.navigate(['emailVerification']);
-          });
+          this.router.navigate(['emailVerification']);
           this.bottomSheetRef.dismiss();
         })
         .catch((error) => {

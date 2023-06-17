@@ -35,4 +35,14 @@ export class SidebarComponent {
       },
     });
   }
+
+  DeleteAccountClick() {
+    this.dialog.open(ChangeDataModalComponent, {
+      data: {
+        info: 'Delete account',
+        message: `Are you sure you want to delete your account? All your posts will be deleted`,
+        yesButton: true,
+      },
+    });
+  }
 }

@@ -5,7 +5,7 @@ import {
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
 import { UserData } from '../interfaces/user-data.interface';
-import { PostData } from '../interfaces/post-data.interface';
+import { LikeInterface, PostData } from '../interfaces/post-data.interface';
 import { UserDataService } from './user-data.service';
 import { Observable } from 'rxjs';
 
@@ -99,11 +99,11 @@ export class PostService {
   listenToDocumentValueChanges(
     documentId: string,
     collectionPath2: string
-  ): Observable<any> {
+  ): Observable<LikeInterface[]> {
     const documentRef = this.collectionPosts
       .doc(documentId)
       .collection(collectionPath2);
-    return documentRef.valueChanges();
+    return documentRef.valueChanges() as Observable<LikeInterface[]>;
   }
 
   getLikes(postId: string) {
@@ -115,17 +115,27 @@ export class PostService {
       (data) => {
         this.likes = data.length;
 
-        if (data.find((like: any) => like.creatorId == creatorId)) {
-          if (data && data[0].likeId) {
-            this.yourLikeId = data[0].likeId;
+        data.find((like) => {
+          if (like.creatorId == creatorId) {
+            this.yourLikeId = like.likeId;
+            this.isLiked = true;
           }
-          this.isLiked = true;
-        }
+        });
       }
     );
   }
 
   deleteLike(postId: string) {
+    // const collectionRef = this.collectionPosts
+    //   .doc(postId)
+    //   .collection('Likes').ref;
+    // collectionRef
+    //   .where('creatorId', '==', creatorId)
+    //   .delete()
+    //   .then((querySnapshot) => {})
+    //   .catch((error) => {});
+
+    this.getLikes(postId);
     if (this.yourLikeId)
       this.collectionPosts
         .doc(postId)
@@ -141,8 +151,8 @@ export class PostService {
   searchDocumentsByCreatorId(
     creatorId: string,
     postId: string
-  ): Promise<any[]> {
-    return new Promise<any[]>((resolve, reject) => {
+  ): Promise<LikeInterface[]> {
+    return new Promise((resolve, reject) => {
       const collectionRef = this.collectionPosts
         .doc(postId)
         .collection('Likes').ref;
@@ -150,8 +160,8 @@ export class PostService {
         .where('creatorId', '==', creatorId)
         .get()
         .then((querySnapshot) => {
-          const documents: any[] = [];
-          querySnapshot.forEach((doc) => {
+          const documents: LikeInterface[] = [];
+          querySnapshot.forEach((doc: any) => {
             documents.push(doc.data());
           });
           resolve(documents);

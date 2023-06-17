@@ -37,12 +37,12 @@ export class ReplyService {
     collectionPath: string,
     documentId: string,
     collectionPath2: string
-  ): Observable<any> {
+  ): Observable<CommentData[]> {
     const documentRef = this.firestore
       .collection(collectionPath)
       .doc(documentId)
       .collection(collectionPath2, (ref) => ref.orderBy('timestamp', 'desc'));
-    return documentRef.valueChanges();
+    return documentRef.valueChanges() as Observable<CommentData[]>;
   }
 
   sendComment(comment: string, postId: string) {

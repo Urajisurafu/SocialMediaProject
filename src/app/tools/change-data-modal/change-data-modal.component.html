@@ -6,20 +6,40 @@
   </mat-card-header>
 
   <mat-card-content class="message">
-    <form [formGroup]="sidebarForm" (submit)="saveClick()">
+    <form [formGroup]="sidebarForm">
       <div class="message-text">{{ message.message }}</div>
-      <input class="message-input" formControlName="textData" />
-      <div
-        *ngIf="
-          sidebarForm.get('textData')?.invalid &&
-          sidebarForm.get('textData')?.touched
-        "
-      >
-        <small class="error">Field cannot be empty</small>
-      </div>
+      <ng-container *ngIf="!message.yesButton">
+        <input class="message-input" formControlName="textData" />
+        <div
+          *ngIf="
+            sidebarForm.get('textData')?.invalid &&
+            sidebarForm.get('textData')?.touched
+          "
+        >
+          <small class="error">Field cannot be empty</small>
+        </div>
+      </ng-container>
       <div class="message-button">
+        <button (click)="closeClick()" mat-flat-button color="primary">
+          Close
+        </button>
         <span class="spacer"></span>
-        <button type="submit" mat-flat-button color="warn">Save</button>
+        <button
+          *ngIf="message.yesButton"
+          (click)="yesClick()"
+          mat-flat-button
+          color="warn"
+        >
+          Yes
+        </button>
+        <button
+          *ngIf="!message.yesButton"
+          (click)="saveClick()"
+          mat-flat-button
+          color="warn"
+        >
+          Save
+        </button>
       </div>
     </form>
   </mat-card-content>

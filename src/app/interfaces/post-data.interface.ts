@@ -5,3 +5,9 @@ export interface PostData {
   postId: string;
   timestamp: string | Date;
 }
+
+export interface LikeInterface {
+  creatorId: string;
+  likeId: string;
+  timestamp: Date;
+}

@@ -10,3 +10,11 @@
   width: 200px;
   background-color: white;
 }
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+.delete:hover{
+  background-color: #f44336;
+}

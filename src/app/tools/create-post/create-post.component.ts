@@ -17,6 +17,7 @@ import { UserDataService } from '../../services/user-data.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { PostData } from '../../interfaces/post-data.interface';
+import { PostsDataService } from '../../services/posts-data.service';
 
 @Component({
   selector: 'app-create-post',
@@ -34,7 +35,8 @@ export class CreatePostComponent {
     private firestore: AngularFirestore,
     private userDataService: UserDataService,
     private dialogCreatePost: MatDialogRef<CreatePostComponent>,
-    private dialogOpen: MatDialog
+    private dialogOpen: MatDialog,
+    private postsDataService: PostsDataService
   ) {
     this.collection = this.firestore.collection<PostData>('Posts');
 
@@ -94,15 +96,8 @@ export class CreatePostComponent {
       if (snapshot!.state === 'success') {
         fileRef.getDownloadURL().subscribe(
           (url) => {
-            this.collection
-              .doc(postId)
-              .set({
-                comment: comment,
-                creatorId: this.userDataService.getCurrentUserId(),
-                imageUrl: url,
-                timestamp: new Date(),
-                postId: postId,
-              })
+            this.postsDataService
+              .uploadImagePost(postId, comment, url)
               .then(() => {
                 this.dialogCreatePost.close();
               })
@@ -119,15 +114,8 @@ export class CreatePostComponent {
   }
 
   uploadPost(comment: string) {
-    const postId = this.firestore.createId();
-    this.collection
-      .doc(postId)
-      .set({
-        comment: comment,
-        creatorId: this.userDataService.getCurrentUserId(),
-        timestamp: new Date(),
-        postId: postId,
-      })
+    this.postsDataService
+      .uploadPost(comment)
       .then(() => {
         this.dialogCreatePost.close();
       })
