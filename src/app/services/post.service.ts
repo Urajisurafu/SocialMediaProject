@@ -126,16 +126,6 @@ export class PostService {
   }
 
   deleteLike(postId: string) {
-    // const collectionRef = this.collectionPosts
-    //   .doc(postId)
-    //   .collection('Likes').ref;
-    // collectionRef
-    //   .where('creatorId', '==', creatorId)
-    //   .delete()
-    //   .then((querySnapshot) => {})
-    //   .catch((error) => {});
-
-    this.getLikes(postId);
     if (this.yourLikeId)
       this.collectionPosts
         .doc(postId)
