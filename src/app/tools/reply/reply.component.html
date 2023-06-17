@@ -15,9 +15,36 @@
             comment: true,
             'creator-comment': isCommentCreator(comment)
           }"
+          [matMenuTriggerFor]="menu"
         >
           {{ comment.comment }}
         </div>
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent>
+            <button
+              *ngIf="isCommentCreator(comment)"
+              (click)="chaneCommentClick(comment)"
+              mat-menu-item
+            >
+              Change
+            </button>
+            <button
+              *ngIf="!isCommentCreator(comment)"
+              (click)="responseClick(comment)"
+              mat-menu-item
+            >
+              Response
+            </button>
+            <button
+              class="delete"
+              *ngIf="isCommentCreator(comment)"
+              (click)="deleteCommentClick(comment)"
+              mat-menu-item
+            >
+              Delete
+            </button>
+          </ng-template>
+        </mat-menu>
       </div>
     </div>
   </mat-card-content>
@@ -31,6 +58,7 @@
       <mat-icon>send</mat-icon>
     </button>
     <input
+      #commentInput
       formControlName="comment"
       [ngClass]="{ error: checkComment() }"
       placeholder="Comment..."

@@ -46,11 +46,31 @@ export class ReplyService {
   }
 
   sendComment(comment: string, postId: string) {
-    this.collection.doc(postId).collection('PostComments').add({
+    const commentId = this.firestore.createId();
+    this.collection.doc(postId).collection('PostComments').doc(commentId).set({
+      commentId: commentId,
       comment: comment,
       creatorId: this.userDataService.userInfo.userId,
       creatorName: this.userDataService.userInfo.publicName,
       timestamp: new Date(),
     });
+  }
+
+  updateComment(comment: CommentData, postId: string, textComment: string) {
+    this.collection
+      .doc(postId)
+      .collection('PostComments')
+      .doc(comment.commentId)
+      .update({
+        comment: textComment,
+      });
+  }
+
+  deleteComment(comment: CommentData, postId: string) {
+    this.collection
+      .doc(postId)
+      .collection('PostComments')
+      .doc(comment.commentId)
+      .delete();
   }
 }

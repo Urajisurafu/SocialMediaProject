@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { UserDataService } from '../../services/user-data.service';
@@ -15,7 +21,10 @@ import { CommentData } from '../../interfaces/comment-data.interface';
   providers: [ReplyService],
 })
 export class ReplyComponent implements OnInit {
+  @ViewChild('commentInput', { static: false }) commentInput!: ElementRef;
   replyForm: FormGroup;
+  isChangeComment: boolean = false;
+  selectedComment!: CommentData;
   constructor(
     @Inject(MAT_DIALOG_DATA) private postId: string,
     private userDataService: UserDataService,
@@ -38,8 +47,18 @@ export class ReplyComponent implements OnInit {
     const comment = this.replyForm.get('comment');
     comment?.markAsTouched();
     if (comment && !comment.errors) {
-      this.replyService.sendComment(comment.value, this.postId);
-      comment.reset();
+      if (!this.isChangeComment) {
+        this.replyService.sendComment(comment.value, this.postId);
+        comment.reset();
+      } else {
+        this.replyService.updateComment(
+          this.selectedComment,
+          this.postId,
+          comment.value
+        );
+        this.isChangeComment = false;
+        comment.reset();
+      }
     }
   }
 
@@ -52,5 +71,21 @@ export class ReplyComponent implements OnInit {
 
   isCommentCreator(comment: CommentData) {
     return comment.creatorId === this.userDataService.userInfo.userId;
+  }
+
+  deleteCommentClick(comment: CommentData) {
+    this.replyService.deleteComment(comment, this.postId);
+  }
+  chaneCommentClick(comment: CommentData) {
+    this.isChangeComment = true;
+    this.replyForm.get('comment')?.setValue(comment.comment);
+    this.commentInput.nativeElement.focus();
+
+    this.selectedComment = comment;
+  }
+
+  responseClick(comment: CommentData) {
+    this.replyForm.get('comment')?.setValue(`@${comment.creatorName}_`);
+    this.commentInput.nativeElement.focus();
   }
 }

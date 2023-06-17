@@ -122,6 +122,7 @@ export class AuthenticatorComponent {
         .then(() => {
           this.router.navigate(['emailVerification']);
           this.bottomSheetRef.dismiss();
+          this.authenticatorForm.reset();
         })
         .catch((error) => {
           this.dialog.open(InfoModalComponent, {
@@ -153,6 +154,7 @@ export class AuthenticatorComponent {
         .signInWithEmailAndPassword(email.value, password.value)
         .then(() => {
           this.bottomSheetRef.dismiss();
+          this.authenticatorForm.reset();
         })
         .catch((error) => {
           this.dialog.open(InfoModalComponent, {
@@ -186,6 +188,7 @@ export class AuthenticatorComponent {
                 'A link to change your password has been sent to your email.',
             },
           });
+          this.authenticatorForm.reset();
         })
         .catch(() => {
           this.dialog.open(InfoModalComponent, {

@@ -57,7 +57,12 @@
   font-size: .9em;
 }
 
+.delete:hover{
+  background-color: #f44336;
+}
+
 .comment{
+  cursor: pointer;
   max-width: 200px;
   word-wrap: break-word;
   border-radius: 1em;
@@ -73,5 +78,13 @@
 .creator-comment{
   background-color: tomato;
   color: white;
+}
+
+.mat-mdc-select-placeholder{
+  color: white;
+}
+
+.mat-mdc-select-arrow-wrapper {
+  display: none !important;
 }
 

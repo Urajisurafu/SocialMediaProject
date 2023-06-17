@@ -30,6 +30,7 @@ export class ProfileComponent {
 
     if (nickname && description && !nickname.errors && !description.errors) {
       this.userDataService.createUser(nickname.value, description.value);
+      this.profileForm.reset();
     }
   }
 }
