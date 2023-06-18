@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ReplyComponent } from '../reply/reply.component';
-
 import { MatDialog } from '@angular/material/dialog';
 
-import { PostData } from '../../interfaces/post-data.interface';
 import { UserDataService } from '../../services/user-data.service';
 import { PostService } from '../../services/post.service';
+
+import { InfoModalComponent } from '../info-modal/info-modal.component';
+import { ReplyComponent } from '../reply/reply.component';
+
+import { PostData } from '../../interfaces/post-data.interface';
 
 @Component({
   selector: 'app-post',
@@ -65,6 +67,19 @@ export class PostComponent implements OnInit {
   }
 
   deletePostClick() {
-    this.postService.deletePost(this.postData.postId);
+    const dialogRef = this.dialog.open(InfoModalComponent, {
+      data: {
+        info: 'Post deletion',
+        message: 'Do you really want to remove this post?',
+        addButton: true,
+        nameButton: 'Yes',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.postService.deletePost(this.postData.postId);
+      }
+    });
   }
 }

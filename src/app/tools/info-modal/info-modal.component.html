@@ -8,8 +8,18 @@
   <mat-card-content class="message">
     <div class="message-text">{{ message.message }}</div>
     <div class="message-button">
+      <button mat-flat-button color="primary" (click)="closeClick()">
+        Close
+      </button>
       <span class="spacer"></span>
-      <button mat-flat-button color="warn" (click)="closeClick()">Close</button>
+      <button
+        *ngIf="message.addButton"
+        mat-flat-button
+        color="warn"
+        (click)="buttonClick()"
+      >
+        {{ message.nameButton }}
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

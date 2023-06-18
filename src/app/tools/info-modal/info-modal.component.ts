@@ -15,6 +15,10 @@ export class InfoModalComponent {
     private dialog: MatDialogRef<InfoModalComponent>
   ) {}
 
+  buttonClick() {
+    this.dialog.close(true);
+  }
+
   closeClick() {
     this.dialog.close();
   }
