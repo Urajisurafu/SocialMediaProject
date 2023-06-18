@@ -31,5 +31,13 @@
     >
       open_in_new
     </mat-icon>
+
+    <mat-icon
+      *ngIf="checkDeleteButton()"
+      (click)="deletePostClick()"
+      class="action-item"
+      color="warn"
+      >delete</mat-icon
+    >
   </mat-card-actions>
 </mat-card>

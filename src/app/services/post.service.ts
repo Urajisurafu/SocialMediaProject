@@ -8,6 +8,7 @@ import { UserData } from '../interfaces/user-data.interface';
 import { LikeInterface, PostData } from '../interfaces/post-data.interface';
 import { UserDataService } from './user-data.service';
 import { Observable } from 'rxjs';
+import { PostsDataService } from './posts-data.service';
 
 @Injectable()
 export class PostService {
@@ -23,10 +24,18 @@ export class PostService {
   constructor(
     private userDataService: UserDataService,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private postDataService: PostsDataService
   ) {
     this.collectionUsers = this.firestore.collection<UserData>('Users');
     this.collectionPosts = this.firestore.collection<PostData>('Posts');
+  }
+
+  deletePost(postId: string) {
+    this.collectionPosts.doc(postId).delete().then();
+
+    this.postDataService.deleteCollection(postId, 'Likes');
+    this.postDataService.deleteCollection(postId, 'PostComments');
   }
 
   getCreatorInfo(postData: PostData) {

@@ -59,4 +59,12 @@ export class PostComponent implements OnInit {
     const filePath = `Posts/${this.postData.postId}/image`;
     this.postService.downloadFile(filePath);
   }
+
+  checkDeleteButton() {
+    return this.postData.creatorId === this.userDataService.userInfo.userId;
+  }
+
+  deletePostClick() {
+    this.postService.deletePost(this.postData.postId);
+  }
 }

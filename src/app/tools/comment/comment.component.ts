@@ -21,7 +21,7 @@ export class CommentComponent implements OnInit {
     this.replyService
       .getUserInfoById(this.commentData.creatorId)
       .subscribe((data) => {
-        this.userName = data.publicName;
+        this.userName = data?.publicName || '';
       });
   }
 

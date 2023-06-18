@@ -64,19 +64,16 @@ export class ChangeDataModalComponent {
 
     user
       .then((currentUser) => {
-        if (currentUser) {
-          return Promise.resolve(currentUser);
-        } else {
-          return Promise.reject(new Error('Authentication error'));
-        }
+        return currentUser;
       })
       .then((user) => {
-        user.delete().then(() => {
-          this.dialogRef.close();
-          this.userDataService.deleteUser();
-          this.postsDataService.deleteUserPosts();
-          this.router.navigate(['']);
-        });
+        return user?.delete();
+      })
+      .then(() => {
+        this.dialogRef.close();
+        this.userDataService.deleteUser();
+        this.postsDataService.deleteUserPosts();
+        this.router.navigate(['']);
       })
       .catch((error) => {
         this.dialog.open(InfoModalComponent, {
