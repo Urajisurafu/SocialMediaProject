@@ -32,6 +32,10 @@ The user can like and leave comments.
 
 ![Screenshot_10](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/4a14885f-87ed-41fe-be24-acd5da0c7e55)
 
+![Screenshot_16](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/60564270-ebc8-40c7-8e89-2eb159781aee)
+
+![Screenshot_17](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/7ac0a27d-62f0-41be-8cbb-1f554b1694d9)
+
 Each user can create their own post. Once created, the posts page will display the new post.
 
 ![Screenshot_11](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/1d09e187-cd24-4291-8cf3-6fb0de28aee4)
@@ -43,7 +47,7 @@ Each user can create their own post. Once created, the posts page will display t
 
 It is also possible to change the nickname and description
 
-![Screenshot_14](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/cbbd6b8d-5ed5-4004-8e9d-c96e09ab06b7)
+![Screenshot_18](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/e2a5fb4d-68b6-4828-aee4-05f20e90b260)
 
 ![Screenshot_15](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/72cd9da6-e779-4939-9f08-cf1adb6e6c83)
 
