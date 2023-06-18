@@ -42,8 +42,7 @@ Each user can create their own post. Once created, the posts page will display t
 
 ![Screenshot_12](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/f1c3b53f-345b-4f31-a24f-b37752c2af91)
 
-![Screenshot_13](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/50c4fc1d-a671-4af4-a6ee-ec664065abe4)
-0-4c20-ae1e-2f0375b61a8a)
+![Screenshot_19](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/bcdacd5d-f967-4c02-8d57-7a52a423c7f2)
 
 It is also possible to change the nickname and description
 
