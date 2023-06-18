@@ -1,0 +1,38 @@
+<div>
+  <div class="comment-name">{{ userName }}</div>
+  <div
+    [ngClass]="{
+      comment: true,
+      'creator-comment': isCommentCreator()
+    }"
+    [matMenuTriggerFor]="menu"
+  >
+    {{ commentData.comment }}
+  </div>
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent>
+      <button
+        *ngIf="isCommentCreator()"
+        (click)="chaneCommentClick()"
+        mat-menu-item
+      >
+        Change
+      </button>
+      <button
+        *ngIf="!isCommentCreator()"
+        (click)="responseCommentClick()"
+        mat-menu-item
+      >
+        Response
+      </button>
+      <button
+        class="delete"
+        *ngIf="isCommentCreator()"
+        (click)="deleteCommentClick()"
+        mat-menu-item
+      >
+        Delete
+      </button>
+    </ng-template>
+  </mat-menu>
+</div>

@@ -26,7 +26,7 @@ export class ReplyComponent implements OnInit {
   isChangeComment: boolean = false;
   selectedComment!: CommentData;
   constructor(
-    @Inject(MAT_DIALOG_DATA) private postId: string,
+    @Inject(MAT_DIALOG_DATA) public postId: string,
     private userDataService: UserDataService,
     private replyService: ReplyService
   ) {
@@ -70,13 +70,9 @@ export class ReplyComponent implements OnInit {
   }
 
   isCommentCreator(comment: CommentData) {
-    return comment.creatorId === this.userDataService.userInfo.userId;
+    return this.replyService.isCommentCreator(comment);
   }
-
-  deleteCommentClick(comment: CommentData) {
-    this.replyService.deleteComment(comment, this.postId);
-  }
-  chaneCommentClick(comment: CommentData) {
+  chaneComment(comment: CommentData) {
     this.isChangeComment = true;
     this.replyForm.get('comment')?.setValue(comment.comment);
     this.commentInput.nativeElement.focus();
@@ -84,8 +80,8 @@ export class ReplyComponent implements OnInit {
     this.selectedComment = comment;
   }
 
-  responseClick(comment: CommentData) {
-    this.replyForm.get('comment')?.setValue(`@${comment.creatorName}_`);
+  responseComment(comment: string) {
+    this.replyForm.get('comment')?.setValue(`@${comment}_`);
     this.commentInput.nativeElement.focus();
   }
 }

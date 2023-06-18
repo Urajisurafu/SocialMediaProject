@@ -18,8 +18,14 @@
 
 .message{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  &-loader{
+    display: flex;
+    margin-top: 10px;
+  }
 
   &-text{
     padding: 10px;

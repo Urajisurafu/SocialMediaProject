@@ -73,6 +73,7 @@ export class CreatePostComponent {
     const task = this.storage.upload(filePath, this.selectedImageFile);
 
     const dialogRef = this.dialogOpen.open(LoaderComponent, {
+      disableClose: true,
       data: {
         info: `Upload progress`,
         message: '',

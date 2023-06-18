@@ -1,0 +1,26 @@
+.comment{
+  cursor: pointer;
+  max-width: 200px;
+  word-wrap: break-word;
+  border-radius: 1em;
+  background-color: gainsboro;
+  padding: 1em;
+}
+
+.creator-comment-container{
+  justify-content: flex-end;
+  text-align: end;
+}
+
+.creator-comment{
+  background-color: tomato;
+  color: white;
+}
+
+.mat-mdc-select-placeholder{
+  color: white;
+}
+
+.mat-mdc-select-arrow-wrapper {
+  display: none !important;
+}

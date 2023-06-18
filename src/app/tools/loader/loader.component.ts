@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { MessageModalData } from '../../interfaces/message-modal-data.interface';
 
@@ -10,5 +10,12 @@ import { MessageModalData } from '../../interfaces/message-modal-data.interface'
   styleUrls: ['./loader.component.scss'],
 })
 export class LoaderComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public message: MessageModalData) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public message: MessageModalData,
+    private dialogRef: MatDialogRef<LoaderComponent>
+  ) {}
+
+  closeModal() {
+    this.dialogRef.close();
+  }
 }

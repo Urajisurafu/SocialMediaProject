@@ -7,6 +7,7 @@ import {
 import { CommentData } from '../interfaces/comment-data.interface';
 import { PostData } from '../interfaces/post-data.interface';
 import { UserDataService } from './user-data.service';
+import { UserData } from '../interfaces/user-data.interface';
 
 @Injectable()
 export class ReplyService {
@@ -29,7 +30,13 @@ export class ReplyService {
       documentId,
       collectionPath2
     ).subscribe((data) => {
-      this.comments = data;
+      const isEqual =
+        this.comments.length === data.length &&
+        this.comments.every((obj, index) => {
+          const otherObj = data[index];
+          return obj.comment === otherObj.comment;
+        });
+      if (!isEqual) this.comments = data;
     });
   }
 
@@ -72,5 +79,16 @@ export class ReplyService {
       .collection('PostComments')
       .doc(comment.commentId)
       .delete();
+  }
+
+  isCommentCreator(comment: CommentData) {
+    return comment.creatorId === this.userDataService.userInfo.userId;
+  }
+
+  getUserInfoById(userId: string): Observable<UserData> {
+    return this.firestore
+      .collection('Users')
+      .doc(userId)
+      .valueChanges() as Observable<UserData>;
   }
 }

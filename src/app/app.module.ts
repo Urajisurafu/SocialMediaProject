@@ -29,6 +29,7 @@ import { LoaderComponent } from './tools/loader/loader.component';
 import { SidebarComponent } from './tools/sidebar/sidebar.component';
 import { ChangeDataModalComponent } from './tools/change-data-modal/change-data-modal.component';
 import { NavbarComponent } from './tools/navbar/navbar.component';
+import { CommentComponent } from './tools/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { NavbarComponent } from './tools/navbar/navbar.component';
     SidebarComponent,
     ChangeDataModalComponent,
     NavbarComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
