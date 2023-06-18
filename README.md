@@ -26,7 +26,7 @@ After registration, a nickname is created.
 
 The user is then taken to the main page.
 
-![Screenshot_9](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/19fe6b98-ef65-4427-b2fa-191356337b94)
+![Screenshot_21](https://github.com/Urajisurafu/SocialMediaProject/assets/56921368/e671d37b-bec3-4a35-a017-37bd6c89df61)
 
 The user can like and leave comments.
 
