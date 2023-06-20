@@ -112,7 +112,6 @@ export class PostsDataService {
       if (
         window.pageYOffset + window.innerHeight >=
           document.documentElement.scrollHeight &&
-        this.postsSize > this.currentSize &&
         this.postsSize > this.posts.length
       ) {
         this.firestore
