@@ -52,7 +52,7 @@ export class ChangeDataModalComponent {
         )
         .then(() => {
           this.dialogRef.close();
-          this.postsDataService.getPosts();
+          this.postsDataService.newGetPosts();
           this.userDataService.getUpdatedUserProfile();
         });
   }

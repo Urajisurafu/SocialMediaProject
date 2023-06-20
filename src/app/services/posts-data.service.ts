@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { PostData } from '../interfaces/post-data.interface';
+
 import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
+
 import { UserDataService } from './user-data.service';
+
+import { PostData } from '../interfaces/post-data.interface';
 
 @Injectable()
 export class PostsDataService {
   posts: PostData[] = [];
+  pageSize = 3;
+  lastVisibleDoc: any;
+  postsSize!: number;
+  currentSize = 0;
   private collection: AngularFirestoreCollection<PostData>;
   constructor(
     private firestore: AngularFirestore,
     private userDataService: UserDataService
   ) {
     this.collection = this.firestore.collection<PostData>('Posts');
-  }
-
-  getSortedCollection(collectionPath: string): Observable<PostData[]> {
-    const documentRef = this.firestore.collection<PostData>(
-      collectionPath,
-      (ref) => ref.orderBy('timestamp', 'desc')
-    );
-    return documentRef.valueChanges();
   }
 
   uploadPost(comment: string) {
@@ -44,10 +42,6 @@ export class PostsDataService {
       timestamp: new Date(),
       postId: postId,
     });
-  }
-
-  getPosts(): void {
-    this.getSortedCollection('Posts').subscribe((data) => (this.posts = data));
   }
 
   deleteUserPosts() {
@@ -89,5 +83,67 @@ export class PostsDataService {
 
         return batch.commit();
       });
+  }
+
+  getCountOfDocuments() {
+    this.collection.ref.get().then((querySnapshot) => {
+      this.postsSize = querySnapshot.size;
+    });
+  }
+
+  getFirstPosts() {
+    this.firestore
+      .collection('Posts')
+      .ref.orderBy('timestamp', 'desc')
+      .limit(this.pageSize)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc: any) => {
+          this.currentSize++;
+          this.posts.push(doc.data());
+        });
+
+        this.lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+      });
+  }
+
+  getScrollPosts() {
+    window.onscroll = () => {
+      if (
+        window.pageYOffset + window.innerHeight >=
+          document.documentElement.scrollHeight &&
+        this.postsSize > this.currentSize &&
+        this.postsSize > this.posts.length
+      ) {
+        this.firestore
+          .collection('Posts')
+          .ref.orderBy('timestamp', 'desc')
+          .startAfter(this.lastVisibleDoc)
+          .limit(this.pageSize)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc: any) => {
+              this.currentSize++;
+              this.posts.push(doc.data());
+            });
+
+            this.lastVisibleDoc =
+              querySnapshot.docs[querySnapshot.docs.length - 1];
+          });
+      }
+    };
+  }
+
+  newGetPosts(isAdd?: string) {
+    if (isAdd === 'add') this.currentSize++;
+    if (isAdd === 'delete') this.currentSize--;
+
+    this.getCountOfDocuments();
+    const documentRef = this.firestore.collection<PostData>('Posts', (ref) =>
+      ref.orderBy('timestamp', 'desc').limit(this.currentSize)
+    );
+    documentRef.valueChanges().subscribe((data) => {
+      this.posts = data;
+    });
   }
 }
