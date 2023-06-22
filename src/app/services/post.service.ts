@@ -36,6 +36,8 @@ export class PostService {
 
     this.postDataService.deleteCollection(postId, 'Likes');
     this.postDataService.deleteCollection(postId, 'PostComments');
+
+    this.postDataService.newGetPosts('delete');
   }
 
   getCreatorInfo(postData: PostData) {

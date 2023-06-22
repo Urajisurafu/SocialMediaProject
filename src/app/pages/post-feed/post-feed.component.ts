@@ -19,20 +19,13 @@ export class PostFeedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.postsDataService.getPosts();
-    window.addEventListener('scroll', this.onScroll.bind(this));
+    this.postsDataService.getCountOfDocuments();
+    this.postsDataService.getFirstPosts();
+    this.postsDataService.getScrollPosts();
   }
 
   getPosts() {
-    return this.postsDataService.posts.slice(0, this.limit);
-  }
-
-  onScroll(): void {
-    const scrollPosition = window.pageYOffset + window.innerHeight;
-    const pageHeight = document.documentElement.scrollHeight - 1;
-    if (scrollPosition >= pageHeight) {
-      this.limit++;
-    }
+    return this.postsDataService.posts;
   }
 
   onCreatePostClick() {

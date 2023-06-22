@@ -63,6 +63,7 @@ export class CreatePostComponent {
     } else {
       this.uploadPost(comment?.value);
     }
+    this.postsDataService.newGetPosts('add');
   }
 
   uploadImagePost(comment: string) {
