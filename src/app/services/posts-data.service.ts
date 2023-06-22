@@ -12,7 +12,7 @@ import { PostData } from '../interfaces/post-data.interface';
 @Injectable()
 export class PostsDataService {
   posts: PostData[] = [];
-  pageSize = 3;
+  pageSize = 5;
   lastVisibleDoc: any;
   postsSize!: number;
   currentSize = 0;
@@ -92,19 +92,22 @@ export class PostsDataService {
   }
 
   getFirstPosts() {
-    this.firestore
-      .collection('Posts')
-      .ref.orderBy('timestamp', 'desc')
-      .limit(this.pageSize)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc: any) => {
-          this.currentSize++;
-          this.posts.push(doc.data());
-        });
+    if (this.currentSize === 0) {
+      this.firestore
+        .collection('Posts')
+        .ref.orderBy('timestamp', 'desc')
+        .limit(this.pageSize)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc: any) => {
+            this.currentSize++;
+            this.posts.push(doc.data());
+          });
 
-        this.lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-      });
+          this.lastVisibleDoc =
+            querySnapshot.docs[querySnapshot.docs.length - 1];
+        });
+    }
   }
 
   getScrollPosts() {
@@ -112,7 +115,9 @@ export class PostsDataService {
       if (
         window.pageYOffset + window.innerHeight >=
           document.documentElement.scrollHeight &&
-        this.postsSize > this.posts.length
+        this.postsSize > this.currentSize &&
+        this.postsSize > this.posts.length &&
+        this.currentSize > 0
       ) {
         this.firestore
           .collection('Posts')
@@ -137,12 +142,48 @@ export class PostsDataService {
     if (isAdd === 'add') this.currentSize++;
     if (isAdd === 'delete') this.currentSize--;
 
-    this.getCountOfDocuments();
-    const documentRef = this.firestore.collection<PostData>('Posts', (ref) =>
-      ref.orderBy('timestamp', 'desc').limit(this.currentSize)
-    );
-    documentRef.valueChanges().subscribe((data) => {
-      this.posts = data;
-    });
+    this.posts = [];
+
+    if (this.currentSize > 0) {
+      this.getCountOfDocuments();
+      this.firestore
+        .collection('Posts')
+        .ref.orderBy('timestamp', 'desc')
+        .limit(this.currentSize)
+        .get()
+        .then((querySnapshot) => {
+          this.currentSize = 0;
+          querySnapshot.forEach((doc: any) => {
+            this.currentSize++;
+            this.posts.push(doc.data());
+          });
+
+          this.lastVisibleDoc =
+            querySnapshot.docs[querySnapshot.docs.length - 1];
+        });
+    } else {
+      this.getFirstPosts();
+    }
+
+    //#ToDo Implement subscription logic
+    // this.firestore
+    //   .collection('Posts')
+    //   .ref.orderBy('timestamp', 'desc')
+    //   .limit(this.currentSize)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach(() => {
+    //       this.lastVisibleDoc =
+    //         querySnapshot.docs[querySnapshot.docs.length - 1];
+    //     });
+    //   });
+    //
+    // const documentRef = this.firestore.collection<PostData>('Posts', (ref) =>
+    //   ref.orderBy('timestamp', 'desc').limit(this.currentSize)
+    // );
+    // documentRef.valueChanges().subscribe((data) => {
+    //   this.currentSize = data.length;
+    //   this.posts = data;
+    // });
   }
 }
