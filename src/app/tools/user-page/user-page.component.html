@@ -1,0 +1,70 @@
+<div class="user-page">
+  <mat-card class="user-card">
+    <mat-card-header class="user-header">
+      <div class="user-header-name">{{ userName }}</div>
+      <button
+        *ngIf="isOwnPage"
+        class="user-header-settings"
+        mat-button
+        [matMenuTriggerFor]="menu"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Change nickname</button>
+        <button mat-menu-item>Change description</button>
+        <button mat-menu-item>Change image</button>
+      </mat-menu>
+    </mat-card-header>
+    <div class="user-image">
+      <img class="avatar" src="{{ getUserImage() }}" alt="User photo" />
+      <button *ngIf="isOwnPage" class="user-image-button" mat-fab color="basic">
+        <label for="photo-upload">
+          <input
+            (change)="onFileSelected($event)"
+            id="photo-upload"
+            type="file"
+            accept="image/*"
+          />
+          <mat-icon>edit</mat-icon>
+        </label>
+      </button>
+    </div>
+    <mat-card-content class="user-content">
+      <div class="user-content-description">{{ userDescription }}</div>
+      <div class="user-content-statistics">
+        <div class="user-content-statistics-info">
+          Friends - {{ userFriendsLength }}
+        </div>
+        <div class="user-content-statistics-info">
+          Posts - {{ userPostsLength }}
+        </div>
+        <div class="user-content-statistics-info">
+          Online since - {{ userTimestamp | date : "MMM d, y" }}
+        </div>
+      </div>
+      <div class="user-content-button">
+        <button
+          (click)="addToFriends()"
+          *ngIf="!isOwnPage && !isFriend"
+          mat-flat-button
+          color="primary"
+        >
+          {{ getIsAwaitingConfirmation ? "Send again" : "Add as Friend" }}
+        </button>
+        <button
+          (click)="deleteFriend()"
+          *ngIf="!isOwnPage && isFriend"
+          mat-flat-button
+          color="primary"
+        >
+          Delete from Friends
+        </button>
+      </div>
+      <div *ngIf="getIsAwaitingConfirmation">
+        You have already sent a friend invite, wait for the user to accept your
+        invite
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

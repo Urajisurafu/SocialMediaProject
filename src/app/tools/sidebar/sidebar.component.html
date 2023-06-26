@@ -1,14 +1,24 @@
-<mat-toolbar color="primary" [matMenuTriggerFor]="menu">
-  <mat-icon>settings</mat-icon>
-  Settings
-</mat-toolbar>
+<div class="sidebar">
+  <mat-toolbar (click)="HomaPageClick()" color="primary"
+    ><mat-icon>home</mat-icon>Home</mat-toolbar
+  >
+  <mat-toolbar (click)="NewsClick()" color="primary"
+    ><mat-icon>newspaper</mat-icon>News</mat-toolbar
+  >
+  <mat-toolbar color="primary" [matMenuTriggerFor]="menu">
+    <mat-icon>settings</mat-icon>
+    Settings
+  </mat-toolbar>
 
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="ChangeNicknameClick()">Change nickname</button>
-  <button mat-menu-item (click)="ChangeDescriptionClick()">
-    Change description
-  </button>
-  <button class="delete" mat-menu-item (click)="DeleteAccountClick()">
-    Delete account
-  </button>
-</mat-menu>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="ChangeNicknameClick()">
+      Change nickname
+    </button>
+    <button mat-menu-item (click)="ChangeDescriptionClick()">
+      Change description
+    </button>
+    <button class="delete" mat-menu-item (click)="DeleteAccountClick()">
+      Delete account
+    </button>
+  </mat-menu>
+</div>

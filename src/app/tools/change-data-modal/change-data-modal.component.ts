@@ -17,6 +17,7 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { UserPageService } from '../../services/user-page.service';
 
 @Component({
   selector: 'app-change-data-modal',
@@ -30,6 +31,7 @@ export class ChangeDataModalComponent {
     private dialogRef: MatDialogRef<ChangeDataModalComponent>,
     private userDataService: UserDataService,
     private postsDataService: PostsDataService,
+    private userPageService: UserPageService,
     private afAuth: AngularFireAuth,
     private router: Router,
     private dialog: MatDialog
@@ -73,6 +75,8 @@ export class ChangeDataModalComponent {
         this.dialogRef.close();
         this.userDataService.deleteUser();
         this.postsDataService.deleteUserPosts();
+        this.userPageService.deleteUserPostsCollection();
+        this.userPageService.deleteUserFriendsCollection();
         this.router.navigate(['']);
       })
       .catch((error) => {

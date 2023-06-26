@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
 import { UserDataService } from '../../services/user-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,8 @@ import { UserDataService } from '../../services/user-data.service';
 export class SidebarComponent {
   constructor(
     private dialog: MatDialog,
-    private userDataService: UserDataService
+    private userDataService: UserDataService,
+    private router: Router
   ) {}
 
   ChangeNicknameClick() {
@@ -44,5 +46,13 @@ export class SidebarComponent {
         yesButton: true,
       },
     });
+  }
+
+  HomaPageClick() {
+    this.router.navigate(['userPage']);
+  }
+
+  NewsClick() {
+    this.router.navigate(['postFeed']);
   }
 }

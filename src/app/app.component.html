@@ -1,5 +1,7 @@
 <app-navbar></app-navbar>
 
+<app-sidebar *ngIf="checkUrl()"></app-sidebar>
+
 <router-outlet></router-outlet>
 
 <app-profile [show]="getIsLoggedIn() && !getUserHasProfile()"></app-profile>

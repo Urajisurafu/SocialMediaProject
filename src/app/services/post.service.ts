@@ -9,6 +9,7 @@ import { LikeInterface, PostData } from '../interfaces/post-data.interface';
 import { UserDataService } from './user-data.service';
 import { Observable } from 'rxjs';
 import { PostsDataService } from './posts-data.service';
+import { UserPageService } from './user-page.service';
 
 @Injectable()
 export class PostService {
@@ -25,14 +26,19 @@ export class PostService {
     private userDataService: UserDataService,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
-    private postDataService: PostsDataService
+    private postDataService: PostsDataService,
+    private mainUserPageService: UserPageService
   ) {
     this.collectionUsers = this.firestore.collection<UserData>('Users');
     this.collectionPosts = this.firestore.collection<PostData>('Posts');
   }
 
   deletePost(postId: string) {
+    const creatorId = this.userDataService.getCurrentUserId();
+
     this.collectionPosts.doc(postId).delete().then();
+
+    this.mainUserPageService.deleteUserPost(creatorId, postId);
 
     this.postDataService.deleteCollection(postId, 'Likes');
     this.postDataService.deleteCollection(postId, 'PostComments');

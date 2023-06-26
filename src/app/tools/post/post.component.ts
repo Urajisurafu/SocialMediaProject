@@ -9,6 +9,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ReplyComponent } from '../reply/reply.component';
 
 import { PostData } from '../../interfaces/post-data.interface';
+import { UserPageService } from '../../services/user-page.service';
 
 @Component({
   selector: 'app-post',
@@ -22,7 +23,8 @@ export class PostComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private userDataService: UserDataService,
-    private postService: PostService
+    private postService: PostService,
+    private mainUserPageService: UserPageService
   ) {}
 
   ngOnInit() {
@@ -81,5 +83,9 @@ export class PostComponent implements OnInit {
         this.postService.deletePost(this.postData.postId);
       }
     });
+  }
+
+  goToFriendPageClick() {
+    this.mainUserPageService.goToFriendPage(this.postData.creatorId);
   }
 }

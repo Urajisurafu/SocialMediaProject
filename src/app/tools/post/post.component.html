@@ -1,6 +1,8 @@
 <mat-card class="post">
   <mat-card-header>
-    <mat-card-title class="creator-name">{{ getCreatorName() }}</mat-card-title>
+    <mat-card-title (click)="goToFriendPageClick()" class="creator-name">{{
+      getCreatorName()
+    }}</mat-card-title>
     <mat-card-subtitle>{{
       getDate() | date : "MMM d, y, H:mm "
     }}</mat-card-subtitle>

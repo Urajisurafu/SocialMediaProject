@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { UserDataService } from './services/user-data.service';
 
@@ -10,8 +11,20 @@ import { UserDataService } from './services/user-data.service';
 export class AppComponent {
   title = 'SocialMediaProject';
 
-  constructor(private userDataService: UserDataService) {
+  constructor(
+    private userDataService: UserDataService,
+    private location: Location
+  ) {
     this.userDataService.checkLoginStatus();
+  }
+
+  checkUrl() {
+    const url = this.location.path();
+    return (
+      url.includes('postFeed') ||
+      url.includes('userPage') ||
+      url.includes('friendPage')
+    );
   }
 
   getIsLoggedIn() {

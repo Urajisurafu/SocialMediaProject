@@ -1,3 +1,11 @@
+.sidebar{
+  position: absolute;
+  top: 5em;
+  left: 0;
+  height: 5em;
+  z-index: 10;
+}
+
 .mat-toolbar{
   display: flex;
   align-items: center;

@@ -6,6 +6,7 @@ import {
 } from '@angular/fire/compat/firestore';
 
 import { UserDataService } from './user-data.service';
+import { UserPageService } from './user-page.service';
 
 import { PostData } from '../interfaces/post-data.interface';
 
@@ -19,29 +20,42 @@ export class PostsDataService {
   private collection: AngularFirestoreCollection<PostData>;
   constructor(
     private firestore: AngularFirestore,
-    private userDataService: UserDataService
+    private userDataService: UserDataService,
+    private mainUserPageService: UserPageService
   ) {
     this.collection = this.firestore.collection<PostData>('Posts');
   }
 
   uploadPost(comment: string) {
     const postId = this.firestore.createId();
-    return this.collection.doc(postId).set({
-      comment: comment,
-      creatorId: this.userDataService.getCurrentUserId(),
-      timestamp: new Date(),
-      postId: postId,
-    });
+    const creatorId = this.userDataService.getCurrentUserId();
+    return this.collection
+      .doc(postId)
+      .set({
+        comment: comment,
+        creatorId: creatorId,
+        timestamp: new Date(),
+        postId: postId,
+      })
+      .then(() => {
+        this.mainUserPageService.addUserPost(creatorId, postId);
+      });
   }
 
   uploadImagePost(postId: string, comment: string, url: string) {
-    return this.collection.doc(postId).set({
-      comment: comment,
-      creatorId: this.userDataService.getCurrentUserId(),
-      imageUrl: url,
-      timestamp: new Date(),
-      postId: postId,
-    });
+    const creatorId = this.userDataService.getCurrentUserId();
+    return this.collection
+      .doc(postId)
+      .set({
+        comment: comment,
+        creatorId: this.userDataService.getCurrentUserId(),
+        imageUrl: url,
+        timestamp: new Date(),
+        postId: postId,
+      })
+      .then(() => {
+        this.mainUserPageService.addUserPost(creatorId, postId);
+      });
   }
 
   deleteUserPosts() {

@@ -6,11 +6,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 
 import { UserData } from '../interfaces/user-data.interface';
 import { Auth, getAuth } from 'firebase/auth';
+import { map } from 'rxjs';
 
 @Injectable()
 export class UserDataService {
@@ -27,53 +27,36 @@ export class UserDataService {
     this.collection = this.firestore.collection<UserData>('Users');
   }
 
-  updateDocumentField(
-    collectionPath: string,
-    documentId: string,
-    field: string,
-    value: string
-  ): Promise<void> {
-    const documentRef = this.firestore
-      .collection(collectionPath)
-      .doc(documentId);
-    const updateData = { [field]: value };
+  getUpdatedUserProfile() {
+    this.afAuth.currentUser
+      .then((user) => {
+        const userId = user?.uid;
+        return this.firestore
+          .collection('Users')
+          .doc(userId)
+          .get()
+          .pipe(
+            map((doc) => {
+              const userData = doc.data() as UserData;
+              this.userHasProfile = doc.exists;
+              if (doc.exists) {
+                this.router.navigate(['userPage']);
 
-    return documentRef.update(updateData);
-  }
-
-  resetUserName() {
-    this.userInfo.publicName = '';
-  }
-
-  getCurrentUserId(): string {
-    const authInstance: Auth = getAuth();
-    const user = authInstance.currentUser;
-    return user ? user.uid : '';
-  }
-
-  async getUpdatedUserProfile() {
-    const user = await this.afAuth.currentUser;
-
-    const documentRef: AngularFirestoreDocument<UserData> = this.firestore
-      .collection('Users')
-      .doc(user?.uid);
-    documentRef.get().subscribe(
-      (doc) => {
-        this.userHasProfile = doc.exists;
-        if (doc.exists) {
-          this.router.navigate(['postFeed']);
-
-          this.userInfo = {
-            userId: doc.data()!.userId,
-            publicName: doc.data()!.publicName,
-            description: doc.data()!.description,
-          };
-        }
-      },
-      () => {
-        console.error('Error getting document');
-      }
-    );
+                this.userInfo = {
+                  userId: userData.userId,
+                  publicName: userData.publicName,
+                  description: userData.description,
+                  timestamp: userData.timestamp,
+                  imageUrl: userData.imageUrl,
+                };
+              }
+            })
+          )
+          .toPromise();
+      })
+      .catch((error) => {
+        console.error('Error getting document:', error);
+      });
   }
 
   checkLoginStatus() {
@@ -90,6 +73,12 @@ export class UserDataService {
     });
   }
 
+  getCurrentUserId(): string {
+    const authInstance: Auth = getAuth();
+    const user = authInstance.currentUser;
+    return user ? user.uid : '';
+  }
+
   createUser(nickname: string, description: string) {
     this.collection
       .doc(this.getCurrentUserId())
@@ -97,6 +86,7 @@ export class UserDataService {
         publicName: nickname,
         description: description,
         userId: this.getCurrentUserId(),
+        timestamp: new Date(),
       })
       .then(() => {
         this.getUpdatedUserProfile();
@@ -104,6 +94,10 @@ export class UserDataService {
       .catch((error) => {
         console.error('Error writing document: ', error);
       });
+  }
+
+  resetUserName() {
+    this.userInfo.publicName = '';
   }
 
   deleteUser() {
@@ -116,5 +110,19 @@ export class UserDataService {
       .catch((error) => {
         console.error('Error writing document: ', error);
       });
+  }
+
+  updateDocumentField(
+    collectionPath: string,
+    documentId: string,
+    field: string,
+    value: string
+  ): Promise<void> {
+    const documentRef = this.firestore
+      .collection(collectionPath)
+      .doc(documentId);
+    const updateData = { [field]: value };
+
+    return documentRef.update(updateData);
   }
 }

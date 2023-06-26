@@ -1,0 +1,13 @@
+<app-user-page
+  [userInfo]="friendInfo"
+  [userName]="getFriendName()"
+  [userDescription]="getFriendDescription()"
+  [userTimestamp]="getUserTimestamp()"
+  [userPostsLength]="getFriendPostsLength()"
+  [userFriendsLength]="getFriendFriendsLength()"
+  [isFriend]="getIsFriend()"
+  [getIsAwaitingConfirmation]="getIsAwaitingConfirmation()"
+  [friendId]="getFriendId()"
+  [isOwnPage]="false"
+  (isChangeFriendStatus)="handleValueChange($event)"
+></app-user-page>

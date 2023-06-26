@@ -5,7 +5,12 @@
 }
 
 .creator-name{
+  cursor: pointer;
   font-size: 24px;
+}
+
+.creator-name:hover{
+  color: #f44336;
 }
 
 .action-item{
