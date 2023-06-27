@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserPageService } from '../../services/user-page.service';
 import { UserData } from '../../interfaces/user-data.interface';
+import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UserDataService } from '../../services/user-data.service';
 
 @Component({
   selector: 'app-user-page',
@@ -21,7 +24,14 @@ export class UserPageComponent {
 
   @Output() isChangeFriendStatus = new EventEmitter<boolean>();
 
-  constructor(private mainUserPageService: UserPageService) {}
+  infoContent: string = '';
+  isInfoWindowVisible: boolean = false;
+
+  constructor(
+    private mainUserPageService: UserPageService,
+    private userDataService: UserDataService,
+    private dialog: MatDialog
+  ) {}
 
   getUserImage() {
     if (this.userInfo && this.userInfo.imageUrl) {
@@ -53,5 +63,35 @@ export class UserPageComponent {
     this.mainUserPageService.deleteFriend(this.friendId);
 
     this.isChangeFriendStatus.emit(true);
+  }
+
+  showInfoWindow() {
+    this.infoContent =
+      'You have already sent a friend invite, wait for the user to accept your invite!';
+    this.isInfoWindowVisible = true;
+  }
+
+  hideInfoWindow() {
+    this.isInfoWindowVisible = false;
+  }
+
+  ChangeNicknameClick() {
+    this.dialog.open(ChangeDataModalComponent, {
+      data: {
+        info: 'Change Nickname',
+        message: `Your current nickname - ${this.userDataService.userInfo.publicName}`,
+        field: 'publicName',
+      },
+    });
+  }
+
+  ChangeDescriptionClick() {
+    this.dialog.open(ChangeDataModalComponent, {
+      data: {
+        info: 'Change Description',
+        message: `Your current description - ${this.userDataService.userInfo.description}`,
+        field: 'description',
+      },
+    });
   }
 }

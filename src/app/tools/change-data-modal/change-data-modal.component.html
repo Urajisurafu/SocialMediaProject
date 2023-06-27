@@ -26,7 +26,7 @@
         <span class="spacer"></span>
         <button
           *ngIf="message.yesButton"
-          (click)="yesClick()"
+          (click)="deleteUser()"
           mat-flat-button
           color="warn"
         >
@@ -34,7 +34,7 @@
         </button>
         <button
           *ngIf="!message.yesButton"
-          (click)="saveClick()"
+          (click)="saveData()"
           mat-flat-button
           color="warn"
         >

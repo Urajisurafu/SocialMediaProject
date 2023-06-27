@@ -33,6 +33,7 @@ import { CommentComponent } from './tools/comment/comment.component';
 import { UserPageComponent } from './tools/user-page/user-page.component';
 import { MainUserPageComponent } from './pages/main-user-page/main-user-page.component';
 import { FriendUserPageComponent } from './pages/friend-user-page/friend-user-page.component';
+import { InfoWindowComponent } from './tools/info-window/info-window.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { FriendUserPageComponent } from './pages/friend-user-page/friend-user-pa
     UserPageComponent,
     MainUserPageComponent,
     FriendUserPageComponent,
+    InfoWindowComponent,
   ],
   imports: [
     BrowserModule,

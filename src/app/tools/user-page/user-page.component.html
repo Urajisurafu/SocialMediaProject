@@ -11,9 +11,12 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>Change nickname</button>
-        <button mat-menu-item>Change description</button>
-        <button mat-menu-item>Change image</button>
+        <button mat-menu-item (click)="ChangeNicknameClick()">
+          Change nickname
+        </button>
+        <button mat-menu-item (click)="ChangeDescriptionClick()">
+          Change description
+        </button>
       </mat-menu>
     </mat-card-header>
     <div class="user-image">
@@ -49,9 +52,15 @@
           *ngIf="!isOwnPage && !isFriend"
           mat-flat-button
           color="primary"
+          (mouseenter)="showInfoWindow()"
+          (mouseleave)="hideInfoWindow()"
         >
           {{ getIsAwaitingConfirmation ? "Send again" : "Add as Friend" }}
         </button>
+        <app-info-window
+          *ngIf="isInfoWindowVisible && getIsAwaitingConfirmation"
+          [content]="infoContent"
+        ></app-info-window>
         <button
           (click)="deleteFriend()"
           *ngIf="!isOwnPage && isFriend"
@@ -60,10 +69,6 @@
         >
           Delete from Friends
         </button>
-      </div>
-      <div *ngIf="getIsAwaitingConfirmation">
-        You have already sent a friend invite, wait for the user to accept your
-        invite
       </div>
     </mat-card-content>
   </mat-card>

@@ -40,8 +40,6 @@ export class UserDataService {
               const userData = doc.data() as UserData;
               this.userHasProfile = doc.exists;
               if (doc.exists) {
-                this.router.navigate(['userPage']);
-
                 this.userInfo = {
                   userId: userData.userId,
                   publicName: userData.publicName,
@@ -65,6 +63,7 @@ export class UserDataService {
       if (user) {
         if (user.emailVerified) {
           this.getUpdatedUserProfile();
+          this.router.navigate(['userPage']);
         } else {
           user.sendEmailVerification();
           this.router.navigate(['emailVerification']);
@@ -90,6 +89,7 @@ export class UserDataService {
       })
       .then(() => {
         this.getUpdatedUserProfile();
+        this.router.navigate(['userPage']);
       })
       .catch((error) => {
         console.error('Error writing document: ', error);

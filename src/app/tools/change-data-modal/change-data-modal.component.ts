@@ -41,7 +41,7 @@ export class ChangeDataModalComponent {
     });
   }
 
-  saveClick() {
+  saveData() {
     const newTextData = this.sidebarForm.get('textData');
 
     if (newTextData && !newTextData.errors)
@@ -59,7 +59,7 @@ export class ChangeDataModalComponent {
         });
   }
 
-  yesClick() {
+  deleteUser() {
     const user = this.afAuth.currentUser;
 
     if (!user) return;

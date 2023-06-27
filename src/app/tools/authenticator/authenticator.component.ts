@@ -101,24 +101,13 @@ export class AuthenticatorComponent {
   }
 
   setRegister() {
-    const email = this.authenticatorForm.get('register.registerEmail');
-    const password = this.authenticatorForm.get('register.registerPassword');
-    const confirmPassword = this.authenticatorForm.get(
-      'register.registerConfirmPassword'
-    );
-    const register = this.authenticatorForm.get('register');
+    const registerForm = this.authenticatorForm.get('register');
 
-    if (
-      email &&
-      password &&
-      confirmPassword &&
-      !email.errors &&
-      !password.errors &&
-      !confirmPassword.errors &&
-      !register?.errors
-    ) {
+    if (registerForm && registerForm.valid) {
+      const { registerEmail, registerPassword } = registerForm.value;
+
       this.afAuth
-        .createUserWithEmailAndPassword(email.value, password.value)
+        .createUserWithEmailAndPassword(registerEmail, registerPassword)
         .then(() => {
           this.router.navigate(['emailVerification']);
           this.bottomSheetRef.dismiss();
