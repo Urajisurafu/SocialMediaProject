@@ -1,4 +1,4 @@
-<div class="news-line">
+<div class="news-line" [style.background-image]="backgroundStorage">
   <div class="post-feed">
     <app-post *ngFor="let post of getPosts()" [postData]="post"></app-post>
   </div>

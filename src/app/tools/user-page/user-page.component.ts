@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserPageService } from '../../services/user-page.service';
 import { UserData } from '../../interfaces/user-data.interface';
 import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDataService } from '../../services/user-data.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent {
+export class UserPageComponent implements OnInit {
   @Input() userInfo!: UserData;
   @Input() userName: string = '';
   @Input() userDescription: string = '';
@@ -27,11 +28,20 @@ export class UserPageComponent {
   infoContent: string = '';
   isInfoWindowVisible: boolean = false;
 
+  backgroundStorage: string = '';
   constructor(
     private mainUserPageService: UserPageService,
     private userDataService: UserDataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private storageService: StorageService
   ) {}
+
+  ngOnInit() {
+    const storagePath = 'Background/home-page.jpg'; // Укажите путь к файлу в Firebase Storage
+    this.storageService
+      .getDataFromStorage(storagePath)
+      .subscribe((data) => (this.backgroundStorage = `url(${data})`));
+  }
 
   getUserImage() {
     if (this.userInfo && this.userInfo.imageUrl) {
