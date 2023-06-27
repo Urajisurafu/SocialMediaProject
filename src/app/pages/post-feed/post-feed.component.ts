@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { CreatePostComponent } from '../../tools/create-post/create-post.component';
 
@@ -18,14 +18,14 @@ export class PostFeedComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private postsDataService: PostsDataService,
-    private storageService: StorageService
+    @Inject(StorageService) private storageService: StorageService
   ) {}
 
   ngOnInit() {
     const storagePath = 'Background/post-feed2.jpg'; // Укажите путь к файлу в Firebase Storage
     this.storageService
       .getDataFromStorage(storagePath)
-      .subscribe((data) => (this.backgroundStorage = `url(${data})`));
+      .subscribe((data: any) => (this.backgroundStorage = `url(${data})`));
     this.postsDataService.getCountOfDocuments();
     this.postsDataService.getFirstPosts();
     this.postsDataService.getScrollPosts();

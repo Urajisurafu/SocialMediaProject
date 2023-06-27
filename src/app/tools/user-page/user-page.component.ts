@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { UserPageService } from '../../services/user-page.service';
 import { UserData } from '../../interfaces/user-data.interface';
 import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
@@ -33,7 +40,7 @@ export class UserPageComponent implements OnInit {
     private mainUserPageService: UserPageService,
     private userDataService: UserDataService,
     private dialog: MatDialog,
-    private storageService: StorageService
+    @Inject(StorageService) private storageService: StorageService
   ) {}
 
   ngOnInit() {

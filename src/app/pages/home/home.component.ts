@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { UserDataService } from '../../services/user-data.service';
 
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private userDataService: UserDataService,
     private loginSheet: MatBottomSheet,
-    private storageService: StorageService
+    @Inject(StorageService) private storageService: StorageService
   ) {}
 
   ngOnInit() {

@@ -30,10 +30,6 @@ import { SidebarComponent } from './tools/sidebar/sidebar.component';
 import { ChangeDataModalComponent } from './tools/change-data-modal/change-data-modal.component';
 import { NavbarComponent } from './tools/navbar/navbar.component';
 import { CommentComponent } from './tools/comment/comment.component';
-import { UserPageComponent } from './tools/user-page/user-page.component';
-import { MainUserPageComponent } from './pages/main-user-page/main-user-page.component';
-import { FriendUserPageComponent } from './pages/friend-user-page/friend-user-page.component';
-import { InfoWindowComponent } from './tools/info-window/info-window.component';
 
 @NgModule({
   declarations: [
@@ -52,10 +48,6 @@ import { InfoWindowComponent } from './tools/info-window/info-window.component';
     ChangeDataModalComponent,
     NavbarComponent,
     CommentComponent,
-    UserPageComponent,
-    MainUserPageComponent,
-    FriendUserPageComponent,
-    InfoWindowComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,5 +62,6 @@ import { InfoWindowComponent } from './tools/info-window/info-window.component';
   ],
   providers: [UserDataService, PostsDataService],
   bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule {}
