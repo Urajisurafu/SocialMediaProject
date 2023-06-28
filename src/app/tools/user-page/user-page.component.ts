@@ -3,22 +3,28 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { UserPageService } from '../../services/user-page.service';
-import { UserData } from '../../interfaces/user-data.interface';
-import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
-import { MatDialog } from '@angular/material/dialog';
 import { UserDataService } from '../../services/user-data.service';
 import { StorageService } from '../../services/storage.service';
+
+import { MatDialog } from '@angular/material/dialog';
+
+import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
+
+import { UserData } from '../../interfaces/user-data.interface';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent implements OnInit {
+export class UserPageComponent implements OnInit, OnDestroy {
   @Input() userInfo!: UserData;
   @Input() userName: string = '';
   @Input() userDescription: string = '';
@@ -31,6 +37,8 @@ export class UserPageComponent implements OnInit {
   @Input() getIsAwaitingConfirmation!: boolean;
 
   @Output() isChangeFriendStatus = new EventEmitter<boolean>();
+
+  private storageSubscription: Subscription | undefined;
 
   infoContent: string = '';
   isInfoWindowVisible: boolean = false;
@@ -45,9 +53,15 @@ export class UserPageComponent implements OnInit {
 
   ngOnInit() {
     const storagePath = 'Background/home-page.jpg'; // Укажите путь к файлу в Firebase Storage
-    this.storageService
+    this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
       .subscribe((data) => (this.backgroundStorage = `url(${data})`));
+  }
+
+  ngOnDestroy() {
+    if (this.storageSubscription) {
+      this.storageSubscription.unsubscribe();
+    }
   }
 
   getUserImage() {

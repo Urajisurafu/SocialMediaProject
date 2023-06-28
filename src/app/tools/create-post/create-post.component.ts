@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { finalize, tap } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  filter,
+  finalize,
+  forkJoin,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -63,7 +71,6 @@ export class CreatePostComponent {
     } else {
       this.uploadPost(comment?.value);
     }
-    this.postsDataService.newGetPosts('add');
   }
 
   uploadImagePost(comment: string) {
@@ -76,43 +83,46 @@ export class CreatePostComponent {
     const dialogRef = this.dialogOpen.open(LoaderComponent, {
       disableClose: true,
       data: {
-        info: `Upload progress`,
+        info: 'Upload progress',
         message: '',
       },
     });
 
-    task
-      .percentageChanges()
-      .pipe(
-        tap((percentage) => {
-          dialogRef.componentInstance.message = {
-            info: `Upload progress`,
-            message: `Upload progress: ${percentage?.toFixed(2)}%`,
-          };
-        }),
-        finalize(() => dialogRef.close())
-      )
-      .subscribe();
+    const percentageChanges$ = task.percentageChanges().pipe(
+      tap((percentage) => {
+        dialogRef.componentInstance.message = {
+          info: 'Upload progress',
+          message: `Upload progress: ${percentage?.toFixed(2)}%`,
+        };
+      }),
+      finalize(() => dialogRef.close())
+    );
 
-    task.snapshotChanges().subscribe((snapshot) => {
-      if (snapshot!.state === 'success') {
-        fileRef.getDownloadURL().subscribe(
-          (url) => {
-            this.postsDataService
-              .uploadImagePost(postId, comment, url)
-              .then(() => {
-                this.dialogCreatePost.close();
-              })
-              .catch((error) => {
-                console.error('Error writing document: ', error);
-              });
-          },
-          (error) => {
-            console.error('Error getting image URL:', error);
-          }
-        );
-      }
-    });
+    const snapshotChanges$ = task.snapshotChanges().pipe(
+      filter((snapshot) => snapshot!.state === 'success'),
+      switchMap(() => fileRef.getDownloadURL()),
+      catchError((error) => {
+        console.error('Error getting image URL:', error);
+        return EMPTY;
+      })
+    );
+
+    const subscription = forkJoin([percentageChanges$, snapshotChanges$])
+      .pipe(
+        switchMap(([_, url]) =>
+          this.postsDataService.uploadImagePost(postId, comment, url)
+        ),
+        catchError((error) => {
+          console.error('Error writing document: ', error);
+          return EMPTY;
+        })
+      )
+      .subscribe(() => {
+        this.dialogCreatePost.close();
+        this.postsDataService.newGetPosts('add');
+      });
+
+    subscription.unsubscribe();
   }
 
   uploadPost(comment: string) {
@@ -120,6 +130,7 @@ export class CreatePostComponent {
       .uploadPost(comment)
       .then(() => {
         this.dialogCreatePost.close();
+        this.postsDataService.newGetPosts('add');
       })
       .catch((error) => {
         console.error('Error writing document: ', error);

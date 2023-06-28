@@ -1,20 +1,35 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommentData } from '../../interfaces/comment-data.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { MatDialog } from '@angular/material/dialog';
+
 import { ReplyService } from '../../services/reply.service';
 import { UserPageService } from '../../services/user-page.service';
-import { MatDialog } from '@angular/material/dialog';
+
+import { CommentData } from '../../interfaces/comment-data.interface';
+
+
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, OnDestroy {
   @Input() commentData!: CommentData;
   @Input() postId!: string;
 
   @Output() chaneComment = new EventEmitter<CommentData>();
   @Output() responseComment = new EventEmitter<string>();
+
+  private userInfoSubscription: Subscription | undefined;
 
   userName: string = '';
   userImageUrl: string = '';
@@ -25,12 +40,18 @@ export class CommentComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.replyService
+    this.userInfoSubscription = this.replyService
       .getUserInfoById(this.commentData.creatorId)
       .subscribe((data) => {
         this.userName = data?.publicName || '';
         this.userImageUrl = data?.imageUrl || '';
       });
+  }
+
+  ngOnDestroy() {
+    if (this.userInfoSubscription) {
+      this.userInfoSubscription.unsubscribe();
+    }
   }
 
   goToFriendPageClick() {

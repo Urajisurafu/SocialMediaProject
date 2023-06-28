@@ -1,4 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { UserDataService } from '../../services/user-data.service';
 
@@ -12,7 +14,8 @@ import { StorageService } from '../../services/storage.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+  private storageSubscription: Subscription | undefined;
   backgroundStorage: string = '';
   constructor(
     private userDataService: UserDataService,
@@ -22,9 +25,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const storagePath = 'Background/home_background.jpg'; // Укажите путь к файлу в Firebase Storage
-    this.storageService
+    this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
       .subscribe((data) => (this.backgroundStorage = `url(${data})`));
+  }
+
+  ngOnDestroy() {
+    if (this.storageSubscription) {
+      this.storageSubscription.unsubscribe();
+    }
   }
 
   getIsLoggedIn() {

@@ -1,16 +1,28 @@
 <div class="sidebar">
   <mat-toolbar (click)="HomaPageClick()" color="primary"
-    ><mat-icon>home</mat-icon>Home</mat-toolbar
-  >
+    ><mat-icon>home</mat-icon>
+    Home
+  </mat-toolbar>
   <mat-toolbar (click)="NewsClick()" color="primary"
-    ><mat-icon>newspaper</mat-icon>News</mat-toolbar
-  >
-  <mat-toolbar color="primary" [matMenuTriggerFor]="menu">
+    ><mat-icon>newspaper</mat-icon>
+    News
+  </mat-toolbar>
+  <mat-toolbar color="primary" [matMenuTriggerFor]="menuNotifications">
+    <mat-icon>notifications</mat-icon>
+    Notifications <br />
+    (under development)
+  </mat-toolbar>
+  <mat-toolbar color="primary" [matMenuTriggerFor]="menuSettings">
     <mat-icon>settings</mat-icon>
     Settings
   </mat-toolbar>
 
-  <mat-menu #menu="matMenu">
+  <mat-menu #menuNotifications="matMenu">
+    <button mat-menu-item>New friends</button>
+    <button mat-menu-item>New likes</button>
+  </mat-menu>
+
+  <mat-menu #menuSettings="matMenu">
     <button mat-menu-item (click)="ChangeNicknameClick()">
       Change nickname
     </button>

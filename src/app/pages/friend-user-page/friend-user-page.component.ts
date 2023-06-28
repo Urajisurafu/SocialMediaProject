@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, switchMap } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,7 +13,9 @@ import { UserData } from '../../interfaces/user-data.interface';
   styleUrls: ['./friend-user-page.component.scss'],
   providers: [FriendPageService],
 })
-export class FriendUserPageComponent implements OnInit {
+export class FriendUserPageComponent implements OnInit, OnDestroy {
+  private friendInfoSubscription: Subscription | undefined;
+
   friendInfo!: UserData;
   constructor(
     private route: ActivatedRoute,
@@ -21,8 +23,8 @@ export class FriendUserPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.delayUntilFriendInfo();
-    this.route.queryParams
+    this.delayUntilFriendInfo().then();
+    this.friendInfoSubscription = this.route.queryParams
       .pipe(
         switchMap((params) =>
           this.friendPageService.getFriendById(params['friendId'])
@@ -31,6 +33,12 @@ export class FriendUserPageComponent implements OnInit {
       .subscribe((snapshot) => {
         this.friendInfo = snapshot.data();
       });
+  }
+
+  ngOnDestroy() {
+    if (this.friendInfoSubscription) {
+      this.friendInfoSubscription.unsubscribe();
+    }
   }
 
   getIsFriend() {

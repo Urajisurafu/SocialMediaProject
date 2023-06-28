@@ -1,15 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
 import { UserDataService } from '../../services/user-data.service';
+import { UserPageService } from '../../services/user-page.service';
 import { PostService } from '../../services/post.service';
 
 import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ReplyComponent } from '../reply/reply.component';
 
 import { PostData } from '../../interfaces/post-data.interface';
-import { UserPageService } from '../../services/user-page.service';
 
 @Component({
   selector: 'app-post',
@@ -17,8 +19,10 @@ import { UserPageService } from '../../services/user-page.service';
   styleUrls: ['./post.component.scss'],
   providers: [PostService],
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
   @Input() postData!: PostData;
+
+  private dialogRefSubscription: Subscription | undefined;
 
   constructor(
     private dialog: MatDialog,
@@ -30,6 +34,12 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     this.postService.getCreatorInfo(this.postData);
     this.postService.getLikes(this.postData.postId);
+  }
+
+  ngOnDestroy() {
+    if (this.dialogRefSubscription) {
+      this.dialogRefSubscription.unsubscribe();
+    }
   }
 
   getDate() {
@@ -78,7 +88,7 @@ export class PostComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    this.dialogRefSubscription = dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.postService.deletePost(this.postData.postId);
       }

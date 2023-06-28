@@ -1,4 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { CreatePostComponent } from '../../tools/create-post/create-post.component';
 
@@ -12,7 +14,8 @@ import { StorageService } from '../../services/storage.service';
   templateUrl: './post-feed.component.html',
   styleUrls: ['./post-feed.component.scss'],
 })
-export class PostFeedComponent implements OnInit {
+export class PostFeedComponent implements OnInit, OnDestroy {
+  private storageSubscription: Subscription | undefined;
   limit: number = 3;
   backgroundStorage: string = '';
   constructor(
@@ -23,12 +26,17 @@ export class PostFeedComponent implements OnInit {
 
   ngOnInit() {
     const storagePath = 'Background/post-feed2.jpg'; // Укажите путь к файлу в Firebase Storage
-    this.storageService
+    this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
       .subscribe((data: any) => (this.backgroundStorage = `url(${data})`));
     this.postsDataService.getCountOfDocuments();
     this.postsDataService.getFirstPosts();
     this.postsDataService.getScrollPosts();
+  }
+  ngOnDestroy() {
+    if (this.storageSubscription) {
+      this.storageSubscription.unsubscribe();
+    }
   }
 
   getPosts() {
