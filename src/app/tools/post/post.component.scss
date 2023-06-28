@@ -7,6 +7,20 @@
 .creator-name{
   cursor: pointer;
   font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.avatar{
+  font-size: 10px;
+  background-color: white;
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #000000;
+  box-shadow: 0 0 7px #666;
+  object-fit: cover;
 }
 
 .creator-name:hover{

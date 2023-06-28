@@ -1,5 +1,20 @@
 <div>
-  <div class="comment-name">{{ userName }}</div>
+  <div
+    *ngIf="!isCommentCreator()"
+    (click)="goToFriendPageClick()"
+    class="comment-header"
+  >
+    <img class="avatar" src="{{ userImageUrl }}" alt="User photo" />
+    <div class="comment-name">{{ userName }}</div>
+  </div>
+  <div
+    *ngIf="isCommentCreator()"
+    (click)="goToFriendPageClick()"
+    class="comment-header comment-header-creator"
+  >
+    <div class="comment-name">{{ userName }}</div>
+    <img class="avatar" src="{{ userImageUrl }}" alt="User photo" />
+  </div>
   <div
     [ngClass]="{
       comment: true,

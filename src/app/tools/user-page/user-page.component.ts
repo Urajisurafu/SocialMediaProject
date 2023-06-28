@@ -34,8 +34,8 @@ export class UserPageComponent implements OnInit {
 
   infoContent: string = '';
   isInfoWindowVisible: boolean = false;
-
   backgroundStorage: string = '';
+
   constructor(
     private mainUserPageService: UserPageService,
     private userDataService: UserDataService,

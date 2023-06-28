@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommentData } from '../../interfaces/comment-data.interface';
 import { ReplyService } from '../../services/reply.service';
+import { UserPageService } from '../../services/user-page.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-comment',
@@ -15,14 +17,25 @@ export class CommentComponent implements OnInit {
   @Output() responseComment = new EventEmitter<string>();
 
   userName: string = '';
-  constructor(private replyService: ReplyService) {}
+  userImageUrl: string = '';
+  constructor(
+    private replyService: ReplyService,
+    private userPageService: UserPageService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.replyService
       .getUserInfoById(this.commentData.creatorId)
       .subscribe((data) => {
         this.userName = data?.publicName || '';
+        this.userImageUrl = data?.imageUrl || '';
       });
+  }
+
+  goToFriendPageClick() {
+    this.userPageService.goToFriendPage(this.commentData.creatorId);
+    this.dialog.closeAll();
   }
 
   isCommentCreator() {

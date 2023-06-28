@@ -21,6 +21,7 @@ export class PostService {
   yourLikeId: string | null = null;
   creatorName: string = '';
   creatorDescription: string = '';
+  creatorImage: string = '';
 
   constructor(
     private userDataService: UserDataService,
@@ -50,10 +51,15 @@ export class PostService {
     this.collectionUsers
       .doc(postData.creatorId)
       .get()
-      .subscribe((data) => {
-        const userData = data.data()!;
+      .toPromise()
+      .then((data) => {
+        const userData = data!.data();
         this.creatorName = userData?.publicName || '';
         this.creatorDescription = userData?.description || '';
+        this.creatorImage = userData?.imageUrl || '';
+      })
+      .catch((error) => {
+        console.error('Error when fetching creator information:', error);
       });
   }
 
@@ -75,42 +81,48 @@ export class PostService {
     }
   }
 
-  addLike(postId: string) {
+  async addLike(postId: string) {
     const creatorId = this.userDataService.getCurrentUserId();
     const likeId = this.firestore.createId();
 
-    this.searchDocumentsByCreatorId(creatorId, postId)
-      .then((documents) => {
-        if (documents.length < 1) {
-          this.collectionPosts
-            .doc(postId)
-            .collection('Likes')
-            .doc(likeId)
-            .set({
-              likeId: likeId,
-              creatorId: this.userDataService.getCurrentUserId(),
-              timestamp: new Date(),
-            })
-            .then(() => (this.isLiked = true));
-        }
-      })
-      .catch((error) => {
-        console.error('Error when searching for documents:', error);
-      });
+    try {
+      const documents = await this.searchDocumentsByCreatorId(
+        creatorId,
+        postId
+      );
+      if (documents.length < 1) {
+        await this.collectionPosts
+          .doc(postId)
+          .collection('Likes')
+          .doc(likeId)
+          .set({
+            likeId,
+            creatorId,
+            timestamp: new Date(),
+          });
+        this.isLiked = true;
+      }
+    } catch (error) {
+      console.error('Error when searching for documents:', error);
+    }
   }
 
-  createLike(postId: string) {
+  async createLike(postId: string) {
     const likeId = this.firestore.createId();
-    this.collectionPosts
-      .doc(postId)
-      .collection('Likes')
-      .doc(likeId)
-      .set({
-        likeId: likeId,
-        creatorId: this.userDataService.getCurrentUserId(),
-        timestamp: new Date(),
-      })
-      .then(() => (this.isLiked = true));
+    try {
+      await this.collectionPosts
+        .doc(postId)
+        .collection('Likes')
+        .doc(likeId)
+        .set({
+          likeId,
+          creatorId: this.userDataService.getCurrentUserId(),
+          timestamp: new Date(),
+        });
+      this.isLiked = true;
+    } catch (error) {
+      console.error('Error when creating like:', error);
+    }
   }
 
   listenToDocumentValueChanges(
@@ -159,54 +171,49 @@ export class PostService {
     creatorId: string,
     postId: string
   ): Promise<LikeInterface[]> {
-    return new Promise((resolve, reject) => {
-      const collectionRef = this.collectionPosts
-        .doc(postId)
-        .collection('Likes').ref;
-      collectionRef
-        .where('creatorId', '==', creatorId)
-        .get()
-        .then((querySnapshot) => {
-          const documents: LikeInterface[] = [];
-          querySnapshot.forEach((doc: any) => {
-            documents.push(doc.data());
-          });
-          resolve(documents);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+    const collectionRef = this.collectionPosts
+      .doc(postId)
+      .collection('Likes').ref;
+    return collectionRef
+      .where('creatorId', '==', creatorId)
+      .get()
+      .then((querySnapshot) => {
+        return querySnapshot.docs.map((doc) => doc.data() as LikeInterface);
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 
   checkCollectionExistence(postId: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      const collectionRef = this.collectionPosts
-        .doc(postId)
-        .collection('Likes');
-      collectionRef.get().subscribe(
-        (querySnapshot) => {
-          resolve(!querySnapshot.empty);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    });
+    const collectionRef = this.collectionPosts.doc(postId).collection('Likes');
+    return collectionRef
+      .get()
+      .toPromise()
+      .then((querySnapshot) => !querySnapshot!.empty)
+      .catch((error) => {
+        throw error;
+      });
   }
   downloadFile(filePath: string) {
     const storageRef = this.storage.ref(filePath);
 
-    storageRef.getDownloadURL().subscribe((url) => {
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', '');
-      link.setAttribute('target', '_blank');
+    storageRef
+      .getDownloadURL()
+      .toPromise()
+      .then((url) => {
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '');
+        link.setAttribute('target', '_blank');
 
-      document.body.appendChild(link);
-      link.click();
+        document.body.appendChild(link);
+        link.click();
 
-      document.body.removeChild(link);
-    });
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error('Error when downloading file:', error);
+      });
   }
 }

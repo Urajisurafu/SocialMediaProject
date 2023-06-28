@@ -85,6 +85,10 @@ export class PostComponent implements OnInit {
     });
   }
 
+  getUserImage() {
+    return this.postService.creatorImage;
+  }
+
   goToFriendPageClick() {
     this.mainUserPageService.goToFriendPage(this.postData.creatorId);
   }

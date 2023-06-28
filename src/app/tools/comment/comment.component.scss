@@ -7,9 +7,31 @@
   padding: 1em;
 }
 
-.creator-comment-container{
-  justify-content: flex-end;
-  text-align: end;
+.comment-header{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &-creator{
+    justify-content: flex-end;
+  }
+}
+
+.comment-header:hover{
+  color: #f44336;
+}
+
+.avatar{
+  font-size: 10px;
+  background-color: white;
+  margin: 0 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid #000000;
+  box-shadow: 0 0 7px #666;
+  object-fit: cover;
 }
 
 .creator-comment{
