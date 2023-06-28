@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   catchError,
   EMPTY,
   filter,
   finalize,
   forkJoin,
+  Subscription,
   switchMap,
   tap,
 } from 'rxjs';
@@ -32,9 +33,11 @@ import { PostsDataService } from '../../services/posts-data.service';
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss'],
 })
-export class CreatePostComponent {
+export class CreatePostComponent implements OnDestroy {
   selectedImageFile!: File;
   createPostForm: FormGroup;
+  uploadImagePostSubscription: Subscription | undefined;
+
   private collection: AngularFirestoreCollection<PostData>;
 
   constructor(
@@ -51,6 +54,12 @@ export class CreatePostComponent {
     this.createPostForm = new FormGroup({
       message: new FormControl('', [Validators.required]),
     });
+  }
+
+  ngOnDestroy() {
+    if (this.uploadImagePostSubscription) {
+      this.uploadImagePostSubscription.unsubscribe();
+    }
   }
 
   checkMessage() {
@@ -107,7 +116,10 @@ export class CreatePostComponent {
       })
     );
 
-    const subscription = forkJoin([percentageChanges$, snapshotChanges$])
+    this.uploadImagePostSubscription = forkJoin([
+      percentageChanges$,
+      snapshotChanges$,
+    ])
       .pipe(
         switchMap(([_, url]) =>
           this.postsDataService.uploadImagePost(postId, comment, url)
@@ -121,8 +133,6 @@ export class CreatePostComponent {
         this.dialogCreatePost.close();
         this.postsDataService.newGetPosts('add');
       });
-
-    subscription.unsubscribe();
   }
 
   uploadPost(comment: string) {
