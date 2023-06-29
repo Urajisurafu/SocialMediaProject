@@ -14,6 +14,14 @@
   background-color: white;
   min-height: 400px;
 
+  &-no-invite{
+    font-family: Bradley Hand, cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
   &-item{
     display: flex;
     align-items: center;
@@ -60,6 +68,12 @@
   .odd {
     background-color: #e5e5e5;
   }
+}
+
+.without-invite{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mat-mdc-card-content:last-child{

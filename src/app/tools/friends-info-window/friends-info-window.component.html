@@ -1,7 +1,13 @@
 <mat-card class="friends-window">
   <mat-tab-group class="friends-group" [selectedIndex]="selectedIndex">
     <mat-tab label="Friends">
-      <mat-card-content class="friends-content">
+      <mat-card-content
+        class="friends-content"
+        [ngClass]="{ 'without-invite': isNoHaveFriends() }"
+      >
+        <div class="friends-content-no-invite" *ngIf="isNoHaveFriends()">
+          Your friends list is empty.
+        </div>
         <div
           *ngFor="let item of getListOfFriends(); let i = index"
           class="friends-content-item"
@@ -28,8 +34,17 @@
         </div>
       </mat-card-content>
     </mat-tab>
-    <mat-tab label="Add friends">
-      <mat-card-content class="friends-content">
+    <mat-tab label="New friends">
+      <mat-card-content
+        class="friends-content"
+        [ngClass]="{ 'without-invite': isNoHaveNotificationFriends() }"
+      >
+        <div
+          class="friends-content-no-invite"
+          *ngIf="isNoHaveNotificationFriends()"
+        >
+          No one has sent you a friend invite yet.
+        </div>
         <div
           *ngFor="let item of getListOfNotificationFriends(); let i = index"
           class="friends-content-item"

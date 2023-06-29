@@ -41,6 +41,20 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
     return this.friendsWindowService.listOfNotificationFriends;
   }
 
+  isNoHaveFriends() {
+    if (this.friendsWindowService.listOfNotificationFriends) {
+      return this.friendsWindowService.listOfFriends.length <= 0;
+    }
+    return;
+  }
+
+  isNoHaveNotificationFriends() {
+    if (this.friendsWindowService.listOfNotificationFriends) {
+      return this.friendsWindowService.listOfNotificationFriends.length <= 0;
+    }
+    return;
+  }
+
   async delayUntilUserInfo() {
     if (!this.userDataService.userInfo?.userId) {
       await new Promise((resolve) => {
