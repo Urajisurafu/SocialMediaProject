@@ -1,35 +1,51 @@
 <div class="sidebar">
-  <mat-toolbar (click)="HomaPageClick()" color="primary"
+  <mat-toolbar (click)="homaPageClick()" color="primary"
     ><mat-icon>home</mat-icon>
     Home
   </mat-toolbar>
-  <mat-toolbar (click)="NewsClick()" color="primary"
+
+  <mat-toolbar (click)="newsClick()" color="primary"
     ><mat-icon>newspaper</mat-icon>
     News
   </mat-toolbar>
-  <mat-toolbar color="primary" [matMenuTriggerFor]="menuNotifications">
-    <mat-icon>notifications</mat-icon>
-    Notifications <br />
-    (under development)
+
+  <mat-toolbar (click)="friendsClick()" color="primary"
+    ><mat-icon>people</mat-icon>
+    Friends
   </mat-toolbar>
+
+  <mat-toolbar color="primary" [matMenuTriggerFor]="menuNotifications">
+    <mat-icon *ngIf="notificationFriendsLength" color="warn"
+      >notifications_active</mat-icon
+    >
+    <mat-icon *ngIf="!notificationFriendsLength">notifications_none</mat-icon>
+    Notifications
+  </mat-toolbar>
+
   <mat-toolbar color="primary" [matMenuTriggerFor]="menuSettings">
     <mat-icon>settings</mat-icon>
     Settings
   </mat-toolbar>
 
   <mat-menu #menuNotifications="matMenu">
-    <button mat-menu-item>New friends</button>
-    <button mat-menu-item>New likes</button>
+    <button mat-menu-item (click)="newFriendsClick()">
+      <mat-icon *ngIf="notificationFriendsLength" color="warn">
+        fiber_manual_record
+      </mat-icon>
+      New friends
+      <ng-container>({{ notificationFriendsLength }})</ng-container>
+    </button>
+    <button mat-menu-item>New likes (0) <br />In developing</button>
   </mat-menu>
 
   <mat-menu #menuSettings="matMenu">
-    <button mat-menu-item (click)="ChangeNicknameClick()">
+    <button mat-menu-item (click)="changeNicknameClick()">
       Change nickname
     </button>
-    <button mat-menu-item (click)="ChangeDescriptionClick()">
+    <button mat-menu-item (click)="changeDescriptionClick()">
       Change description
     </button>
-    <button class="delete" mat-menu-item (click)="DeleteAccountClick()">
+    <button class="delete" mat-menu-item (click)="deleteAccountClick()">
       Delete account
     </button>
   </mat-menu>

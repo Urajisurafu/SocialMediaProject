@@ -14,6 +14,13 @@ const routes: Routes = [
     component: EmailVerificationComponent,
   },
   {
+    path: 'yourFriends',
+    loadChildren: () =>
+      import('./modules/friends-window/friends-window.module').then(
+        (m) => m.FriendsWindowModule
+      ),
+  },
+  {
     path: 'userPage',
     loadChildren: () =>
       import('./modules/main-user-page/main-user-page.module').then(

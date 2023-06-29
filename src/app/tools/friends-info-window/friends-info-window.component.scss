@@ -1,0 +1,67 @@
+.friends-window{
+  width: 100%;
+  min-width: 800px;
+  background-color: #b4b4b4;
+}
+
+.friends-group{
+  height: 100%;
+}
+
+.friends-content{
+  margin: 10px;
+  border-radius: 10px;
+  background-color: white;
+  min-height: 400px;
+
+  &-item{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .item-avatar{
+    font-size: 10px;
+    background-color: white;
+    margin: 5px 10px 0 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    box-shadow: 0 0 7px #666;
+    object-fit: cover;
+  }
+
+  .item-name{
+    display: flex;
+    align-items: center;
+    flex-basis: 35%;
+    cursor: pointer;
+  }
+
+  .item-name:hover{
+    color: #f44336;
+  }
+
+  .item-text{
+    flex-basis: 40%;
+  }
+
+  .item-buttons{
+    flex-basis: 30%;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .even {
+    background-color: lightgray;
+  }
+
+  .odd {
+    background-color: #e5e5e5;
+  }
+}
+
+.mat-mdc-card-content:last-child{
+  padding: 0;
+}

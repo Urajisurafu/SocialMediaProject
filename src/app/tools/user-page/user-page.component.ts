@@ -52,7 +52,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const storagePath = 'Background/home-page.jpg'; // Укажите путь к файлу в Firebase Storage
+    const storagePath = 'Background/home-page.jpg';
     this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
       .subscribe((data) => (this.backgroundStorage = `url(${data})`));

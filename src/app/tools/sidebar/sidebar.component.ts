@@ -1,24 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
 import { UserDataService } from '../../services/user-data.service';
-import { Router } from '@angular/router';
+
+import { NotificationsService } from '../../services/notifications.service';
+
+import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit, OnDestroy {
+  private notificationFriendsSubscription: Subscription | undefined;
+
+  notificationFriendsLength: number = 0;
   constructor(
     private dialog: MatDialog,
     private userDataService: UserDataService,
+    private notificationsService: NotificationsService,
     private router: Router
   ) {}
 
-  ChangeNicknameClick() {
+  ngOnInit() {
+    this.delayUntilUserInfo();
+  }
+
+  ngOnDestroy() {
+    if (this.notificationFriendsSubscription) {
+      this.notificationFriendsSubscription.unsubscribe();
+    }
+  }
+
+  async delayUntilUserInfo() {
+    if (!this.userDataService.userInfo?.userId) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 100);
+      });
+      await this.delayUntilUserInfo();
+    } else {
+      this.notificationFriendsSubscription = this.notificationsService
+        .getYourNotificationFriends(this.userDataService.getCurrentUserId())
+        .subscribe(
+          (querySnapshot) =>
+            (this.notificationFriendsLength = querySnapshot.length)
+        );
+    }
+  }
+
+  changeNicknameClick() {
     this.dialog.open(ChangeDataModalComponent, {
       data: {
         info: 'Change Nickname',
@@ -28,7 +63,7 @@ export class SidebarComponent {
     });
   }
 
-  ChangeDescriptionClick() {
+  changeDescriptionClick() {
     this.dialog.open(ChangeDataModalComponent, {
       data: {
         info: 'Change Description',
@@ -38,7 +73,7 @@ export class SidebarComponent {
     });
   }
 
-  DeleteAccountClick() {
+  deleteAccountClick() {
     this.dialog.open(ChangeDataModalComponent, {
       data: {
         info: 'Delete account',
@@ -48,11 +83,19 @@ export class SidebarComponent {
     });
   }
 
-  HomaPageClick() {
+  homaPageClick() {
     this.router.navigate(['userPage']);
   }
 
-  NewsClick() {
+  newsClick() {
     this.router.navigate(['postFeed']);
+  }
+
+  friendsClick() {
+    this.router.navigate(['yourFriends']);
+  }
+
+  newFriendsClick() {
+    this.router.navigate(['yourFriends', { selectedIndex: 1 }]);
   }
 }

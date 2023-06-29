@@ -23,7 +23,8 @@ export class AppComponent {
     return (
       url.includes('postFeed') ||
       url.includes('userPage') ||
-      url.includes('friendPage')
+      url.includes('friendPage') ||
+      url.includes('yourFriends')
     );
   }
 

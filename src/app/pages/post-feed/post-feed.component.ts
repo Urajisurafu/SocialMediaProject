@@ -25,7 +25,7 @@ export class PostFeedComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const storagePath = 'Background/post-feed2.jpg'; // Укажите путь к файлу в Firebase Storage
+    const storagePath = 'Background/post-feed2.jpg';
     this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
       .subscribe((data: any) => (this.backgroundStorage = `url(${data})`));

@@ -1,0 +1,62 @@
+<mat-card class="friends-window">
+  <mat-tab-group class="friends-group" [selectedIndex]="selectedIndex">
+    <mat-tab label="Friends">
+      <mat-card-content class="friends-content">
+        <div
+          *ngFor="let item of getListOfFriends(); let i = index"
+          class="friends-content-item"
+          [ngClass]="{ even: i % 2 === 0, odd: i % 2 !== 0 }"
+        >
+          <div class="item-name" (click)="goToFriendPageClick(item.userId)">
+            <img
+              class="item-avatar"
+              src="{{ item.imageUrl }}"
+              alt="User photo"
+            />
+            <div>{{ item.publicName }}</div>
+          </div>
+          <div class="item-text">{{ item.description }}</div>
+          <div class="item-buttons">
+            <button
+              (click)="deleteFriendClick(item.userId)"
+              mat-flat-button
+              color="warn"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab label="Add friends">
+      <mat-card-content class="friends-content">
+        <div
+          *ngFor="let item of getListOfNotificationFriends(); let i = index"
+          class="friends-content-item"
+          [ngClass]="{ even: i % 2 === 0, odd: i % 2 !== 0 }"
+        >
+          <img class="item-avatar" src="{{ item.imageUrl }}" alt="User photo" />
+          <div class="item-name">{{ item.publicName }}</div>
+          <div class="item-text">Wants to add you as a friend.</div>
+          <div class="item-buttons">
+            <button
+              (click)="addToFriendsClick(item.userId)"
+              mat-flat-button
+              color="warn"
+            >
+              Add
+            </button>
+            <button
+              (click)="rejectFriendClick(item.userId)"
+              mat-flat-button
+              color="primary"
+            >
+              Reject
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
+  <router-outlet></router-outlet>
+</mat-card>

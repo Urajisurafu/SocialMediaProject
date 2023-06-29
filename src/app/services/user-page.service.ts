@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
+import { combineLatest, filter, finalize, switchMap, take, tap } from 'rxjs';
+
 import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { UserDataService } from './user-data.service';
-import { UserData } from '../interfaces/user-data.interface';
-import { combineLatest, filter, finalize, switchMap, take, tap } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { LoaderComponent } from '../tools/loader/loader.component';
-import { MatDialog } from '@angular/material/dialog';
+
 import { Router } from '@angular/router';
+
+import { MatDialog } from '@angular/material/dialog';
+
+import { UserDataService } from './user-data.service';
+import { NotificationsService } from './notifications.service';
+
+import { LoaderComponent } from '../tools/loader/loader.component';
+
+import { UserData } from '../interfaces/user-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +28,7 @@ export class UserPageService {
   private collectionUsers: AngularFirestoreCollection<UserData>;
   constructor(
     private userDataService: UserDataService,
+    private notificationsService: NotificationsService,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
     private dialogOpen: MatDialog,
@@ -154,9 +162,15 @@ export class UserPageService {
     combineLatest([getFriendExistence1$, getFriendExistence2$])
       .pipe(take(1))
       .subscribe(([snapshot1, snapshot2]: any) => {
+        if (snapshot1.exists && !snapshot2.exists) {
+          this.notificationsService.addNotificationFriend(userId, yourId);
+        }
+
         if (snapshot1.exists && snapshot2.exists) {
           this.updateFriendsStatus(userId, yourId);
           this.updateFriendsStatus(yourId, userId);
+          this.notificationsService.deleteNotificationFriend(userId, yourId);
+          this.notificationsService.deleteNotificationFriend(yourId, userId);
         }
       });
   }
