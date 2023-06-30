@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { InformationLikesComponent } from '../../pages/information-likes/information-likes.component';
 import { LikesWindowComponent } from '../../tools/likes-window/likes-window.component';
 import { MaterialModule } from '../material/material.module';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [InformationLikesComponent, LikesWindowComponent],
@@ -13,7 +12,6 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     MaterialModule,
     RouterModule.forChild([{ path: '', component: InformationLikesComponent }]),
-    FormsModule,
   ],
 })
 export class LikesInfoModule {}
