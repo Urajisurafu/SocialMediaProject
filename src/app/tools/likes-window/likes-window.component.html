@@ -29,7 +29,10 @@
         />
         <div>{{ user.user.publicName }}</div>
       </div>
-      <div class="item-text">Liked your post - {{ user.post.comment }}</div>
+      <div class="item-text" (click)="showPost(user.post)">
+        Liked your post -
+        <span class="item-text-info">{{ user.post.comment }}</span>
+      </div>
       <mat-checkbox
         color="warn"
         [checked]="isChecked(user)"

@@ -67,7 +67,13 @@
   }
 
   .item-text{
-    flex-basis: 75%;
+    flex-basis: 65%;
+    cursor: pointer;
+    word-wrap: break-word;
+  }
+
+  .item-text:hover .item-text-info{
+    color: #f44336;
   }
 
   .even {
