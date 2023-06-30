@@ -24,7 +24,8 @@ export class AppComponent {
       url.includes('postFeed') ||
       url.includes('userPage') ||
       url.includes('friendPage') ||
-      url.includes('yourFriends')
+      url.includes('yourFriends') ||
+      url.includes('informationLikes')
     );
   }
 

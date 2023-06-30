@@ -27,6 +27,10 @@ export class UserDataService {
     this.collection = this.firestore.collection<UserData>('Users');
   }
 
+  resetUserDataService() {
+    this.userInfo = {} as UserData;
+  }
+
   getUpdatedUserProfile() {
     this.afAuth.currentUser
       .then((user) => {

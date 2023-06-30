@@ -1,0 +1,40 @@
+<mat-card class="likes-window">
+  <mat-card-header class="likes-header">
+    <div>New likes</div>
+    <div class="likes-header-delete">
+      <button mat-flat-button color="warn" (click)="toggleSelectAll()">
+        Select all
+      </button>
+      <mat-icon (click)="deleteSelectedLikes()" color="warn">delete</mat-icon>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content
+    class="likes-content"
+    [ngClass]="{ 'without-invite': isNoHaveNotificationLikes() }"
+  >
+    <div class="likes-content-no-invite" *ngIf="isNoHaveNotificationLikes()">
+      Your new likes list is empty.
+    </div>
+    <div
+      *ngFor="let user of getNotificationLikesList(); let i = index"
+      class="likes-content-item"
+      [ngClass]="{ even: i % 2 === 0, odd: i % 2 !== 0 }"
+    >
+      <div class="item-name" (click)="goToFriendPageClick(user.user.userId)">
+        <img
+          class="item-avatar"
+          src="{{ user.user.imageUrl }}"
+          alt="User photo"
+        />
+        <div>{{ user.user.publicName }}</div>
+      </div>
+      <div class="item-text">Liked your post - {{ user.post.comment }}</div>
+      <mat-checkbox
+        color="warn"
+        [checked]="isChecked(user)"
+        (change)="onCheckboxChange(user)"
+      ></mat-checkbox>
+    </div>
+  </mat-card-content>
+</mat-card>

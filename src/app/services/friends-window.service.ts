@@ -26,6 +26,11 @@ export class FriendsWindowService {
     this.userCollection = this.firestore.collection('Users');
   }
 
+  resetFriendsWindowService() {
+    this.listOfFriends = [] as UserData[];
+    this.listOfNotificationFriends = [] as UserData[];
+  }
+
   getYourCurrentFriends() {
     const userId = this.userDataService.getCurrentUserId();
     return this.userCollection
@@ -57,26 +62,24 @@ export class FriendsWindowService {
   }
 
   getYourNotificationFriends() {
-    return this.notificationsService
-      .getYourNotificationFriends(this.userDataService.userInfo.userId)
-      .pipe(
-        tap((querySnapshot) => {
-          if (querySnapshot.length <= 0) {
-            this.listOfNotificationFriends = [];
-          }
-        }),
-        switchMap((querySnapshot) => {
-          const friendIds = querySnapshot.map((friend) => friend.creatorId);
-          const requests = friendIds.map((friendId) =>
-            this.userCollection.doc(friendId).get()
-          );
-          return forkJoin(requests);
-        }),
-        map((results) => results.map((snapshot) => snapshot.data())),
-        filter((user) => user !== undefined),
-        tap((users) => {
-          this.listOfNotificationFriends = users as UserData[];
-        })
-      );
+    return this.notificationsService.getYourNotificationFriends().pipe(
+      tap((querySnapshot) => {
+        if (querySnapshot.length <= 0) {
+          this.listOfNotificationFriends = [];
+        }
+      }),
+      switchMap((querySnapshot) => {
+        const friendIds = querySnapshot.map((friend) => friend.creatorId);
+        const requests = friendIds.map((friendId) =>
+          this.userCollection.doc(friendId).get()
+        );
+        return forkJoin(requests);
+      }),
+      map((results) => results.map((snapshot) => snapshot.data())),
+      filter((user) => user !== undefined),
+      tap((users) => {
+        this.listOfNotificationFriends = users as UserData[];
+      })
+    );
   }
 }

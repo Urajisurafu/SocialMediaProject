@@ -35,6 +35,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'informationLikes',
+    loadChildren: () =>
+      import('./modules/likes-info/likes-info.module').then(
+        (m) => m.LikesInfoModule
+      ),
+  },
+  {
     path: 'postFeed',
     component: PostFeedComponent,
     canActivate: [AuthGuardService],

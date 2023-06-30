@@ -77,6 +77,8 @@ export class ChangeDataModalComponent {
         this.postsDataService.deleteUserPosts();
         this.userPageService.deleteUserPostsCollection();
         this.userPageService.deleteUserFriendsCollection();
+        this.userPageService.deleteSomeCollection('NotificationsLikes');
+        this.userPageService.deleteSomeCollection('NotificationsFriends');
         this.router.navigate(['']);
       })
       .catch((error) => {

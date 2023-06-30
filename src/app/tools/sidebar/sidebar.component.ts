@@ -20,6 +20,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private notificationFriendsSubscription: Subscription | undefined;
 
   notificationFriendsLength: number = 0;
+  notificationLikesLength: number = 0;
+
   constructor(
     private dialog: MatDialog,
     private userDataService: UserDataService,
@@ -45,10 +47,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
       await this.delayUntilUserInfo();
     } else {
       this.notificationFriendsSubscription = this.notificationsService
-        .getYourNotificationFriends(this.userDataService.getCurrentUserId())
+        .getYourNotificationFriends()
         .subscribe(
           (querySnapshot) =>
             (this.notificationFriendsLength = querySnapshot.length)
+        );
+      this.notificationsService
+        .getYourNotificationLikes()
+        .subscribe(
+          (querySnapshot) =>
+            (this.notificationLikesLength = querySnapshot.length)
         );
     }
   }
@@ -97,5 +105,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   newFriendsClick() {
     this.router.navigate(['yourFriends', { selectedIndex: 1 }]);
+  }
+
+  newLikesClick() {
+    this.router.navigate(['informationLikes']);
   }
 }

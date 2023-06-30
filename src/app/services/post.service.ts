@@ -10,6 +10,7 @@ import { UserDataService } from './user-data.service';
 import { Observable } from 'rxjs';
 import { PostsDataService } from './posts-data.service';
 import { UserPageService } from './user-page.service';
+import { NotificationsService } from './notifications.service';
 
 @Injectable()
 export class PostService {
@@ -19,6 +20,7 @@ export class PostService {
   likes: number = 0;
   isLiked = false;
   yourLikeId: string | null = null;
+  creatorPostId: string = '';
   creatorName: string = '';
   creatorDescription: string = '';
   creatorImage: string = '';
@@ -28,7 +30,8 @@ export class PostService {
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
     private postDataService: PostsDataService,
-    private mainUserPageService: UserPageService
+    private mainUserPageService: UserPageService,
+    private notificationsService: NotificationsService
   ) {
     this.collectionUsers = this.firestore.collection<UserData>('Users');
     this.collectionPosts = this.firestore.collection<PostData>('Posts');
@@ -57,6 +60,7 @@ export class PostService {
         this.creatorName = userData?.publicName || '';
         this.creatorDescription = userData?.description || '';
         this.creatorImage = userData?.imageUrl || '';
+        this.creatorPostId = userData?.userId || '';
       })
       .catch((error) => {
         console.error('Error when fetching creator information:', error);
@@ -100,6 +104,11 @@ export class PostService {
             creatorId,
             timestamp: new Date(),
           });
+        this.notificationsService.addNotificationLike(
+          this.creatorPostId,
+          creatorId,
+          postId
+        );
         this.isLiked = true;
       }
     } catch (error) {
@@ -109,6 +118,7 @@ export class PostService {
 
   async createLike(postId: string) {
     const likeId = this.firestore.createId();
+    const creatorId = this.userDataService.getCurrentUserId();
     try {
       await this.collectionPosts
         .doc(postId)
@@ -116,9 +126,14 @@ export class PostService {
         .doc(likeId)
         .set({
           likeId,
-          creatorId: this.userDataService.getCurrentUserId(),
+          creatorId: creatorId,
           timestamp: new Date(),
         });
+      this.notificationsService.addNotificationLike(
+        this.creatorPostId,
+        creatorId,
+        postId
+      );
       this.isLiked = true;
     } catch (error) {
       console.error('Error when creating like:', error);
@@ -155,6 +170,7 @@ export class PostService {
   }
 
   deleteLike(postId: string) {
+    const yourId = this.userDataService.getCurrentUserId();
     if (this.yourLikeId)
       this.collectionPosts
         .doc(postId)
@@ -162,6 +178,11 @@ export class PostService {
         .doc(this.yourLikeId)
         .delete()
         .then(() => {
+          this.notificationsService.deleteNotificationLike(
+            this.creatorPostId,
+            yourId,
+            postId
+          );
           this.isLiked = false;
           this.yourLikeId = null;
         });

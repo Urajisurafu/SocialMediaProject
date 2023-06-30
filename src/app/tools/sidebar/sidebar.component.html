@@ -15,10 +15,14 @@
   </mat-toolbar>
 
   <mat-toolbar color="primary" [matMenuTriggerFor]="menuNotifications">
-    <mat-icon *ngIf="notificationFriendsLength" color="warn"
-      >notifications_active</mat-icon
-    >
-    <mat-icon *ngIf="!notificationFriendsLength">notifications_none</mat-icon>
+    <mat-icon
+      *ngIf="notificationFriendsLength || notificationLikesLength"
+      color="warn"
+      >notifications_active
+    </mat-icon>
+    <mat-icon *ngIf="!notificationFriendsLength && !notificationLikesLength">
+      notifications_none
+    </mat-icon>
     Notifications
   </mat-toolbar>
 
@@ -35,7 +39,13 @@
       New friends
       <ng-container>({{ notificationFriendsLength }})</ng-container>
     </button>
-    <button mat-menu-item>New likes (0) <br />In developing</button>
+    <button mat-menu-item (click)="newLikesClick()">
+      <mat-icon *ngIf="notificationLikesLength" color="warn">
+        fiber_manual_record
+      </mat-icon>
+      New likes
+      <ng-container>({{ notificationLikesLength }})</ng-container>
+    </button>
   </mat-menu>
 
   <mat-menu #menuSettings="matMenu">

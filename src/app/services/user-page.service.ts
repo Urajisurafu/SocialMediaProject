@@ -24,7 +24,7 @@ import { UserData } from '../interfaces/user-data.interface';
 export class UserPageService {
   userPosts: number = 0;
   userFriends: number = 0;
-  isFriend!: boolean;
+
   private collectionUsers: AngularFirestoreCollection<UserData>;
   constructor(
     private userDataService: UserDataService,
@@ -35,6 +35,11 @@ export class UserPageService {
     private router: Router
   ) {
     this.collectionUsers = this.firestore.collection<UserData>('Users');
+  }
+
+  resetUserPageService() {
+    this.userPosts = 0;
+    this.userFriends = 0;
   }
 
   addUserPost(userId: string, postId: string) {

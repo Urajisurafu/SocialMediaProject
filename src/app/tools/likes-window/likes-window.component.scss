@@ -1,0 +1,90 @@
+.likes-window{
+  width: 100%;
+  min-width: 800px;
+  background-color: #b4b4b4;
+}
+
+.likes-header{
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-delete {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: absolute;
+    right: 30px;
+  }
+}
+
+.likes-content{
+  max-height: 470px;
+  overflow-y: auto;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: white;
+  min-height: 400px;
+
+  &-no-invite{
+    font-family: Bradley Hand, cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  &-item{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .item-avatar{
+    font-size: 10px;
+    background-color: white;
+    margin: 5px 10px 0 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    box-shadow: 0 0 7px #666;
+    object-fit: cover;
+  }
+
+  .item-name{
+    flex-basis: 25%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .item-name:hover{
+    color: #f44336;
+  }
+
+  .item-text{
+    flex-basis: 75%;
+  }
+
+  .even {
+    background-color: lightgray;
+  }
+
+  .odd {
+    background-color: #e5e5e5;
+  }
+}
+
+.without-invite{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-mdc-card-content:last-child{
+  padding: 0;
+}

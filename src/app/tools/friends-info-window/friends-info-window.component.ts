@@ -43,7 +43,7 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
 
   isNoHaveFriends() {
     if (this.friendsWindowService.listOfNotificationFriends) {
-      return this.friendsWindowService.listOfFriends.length <= 0;
+      return this.friendsWindowService.listOfFriends?.length <= 0;
     }
     return;
   }

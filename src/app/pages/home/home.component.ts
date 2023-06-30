@@ -7,7 +7,11 @@ import { UserDataService } from '../../services/user-data.service';
 import { AuthenticatorComponent } from '../../tools/authenticator/authenticator.component';
 
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+
 import { StorageService } from '../../services/storage.service';
+import { LikesWindowService } from '../../services/likes-window.service';
+import { UserPageService } from '../../services/user-page.service';
+import { FriendsWindowService } from '../../services/friends-window.service';
 
 @Component({
   selector: 'app-home',
@@ -20,10 +24,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private userDataService: UserDataService,
     private loginSheet: MatBottomSheet,
+    private likesWindowService: LikesWindowService,
+    private userPageService: UserPageService,
+    private friendsWindowService: FriendsWindowService,
     @Inject(StorageService) private storageService: StorageService
   ) {}
 
   ngOnInit() {
+    this.likesWindowService.resetLikesWindowService();
+    this.userDataService.resetUserDataService();
+    this.userPageService.resetUserPageService();
+    this.friendsWindowService.resetFriendsWindowService();
+
     const storagePath = 'Background/home_background.jpg';
     this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
