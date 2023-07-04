@@ -3,7 +3,7 @@ export interface PostData {
   creatorId: string;
   imageUrl?: string;
   postId: string;
-  timestamp: string | Date;
+  timestamp: any;
 }
 
 export interface LikeInterface {

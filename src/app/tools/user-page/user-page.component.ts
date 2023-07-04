@@ -71,13 +71,16 @@ export class UserPageComponent implements OnInit, OnDestroy {
       return '';
     }
   }
-  onFileSelected(event: any) {
-    const selectedImageFile: File = event.target.files[0];
+  onFileSelected(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.files && inputElement.files.length > 0) {
+      const selectedImageFile: File = inputElement.files[0];
 
-    this.mainUserPageService.uploadUserImage(
-      this.userInfo.userId,
-      selectedImageFile
-    );
+      this.mainUserPageService.uploadUserImage(
+        this.userInfo.userId,
+        selectedImageFile
+      );
+    }
   }
 
   addToFriends() {

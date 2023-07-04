@@ -14,21 +14,21 @@ export class FriendsWindowComponent implements OnInit, OnDestroy {
   private storageSubscription: Subscription | undefined;
   private routeParamsSubscription: Subscription | undefined;
 
-  selectedIndex: number = 0;
+  friendsGroup: string = 'Friends';
   backgroundStorage: string = '';
   constructor(
     @Inject(StorageService) private storageService: StorageService,
     private route: ActivatedRoute
   ) {
     this.routeParamsSubscription = this.route.params.subscribe((params) => {
-      this.selectedIndex = params['selectedIndex'];
+      this.friendsGroup = params['friendsGroup'];
     });
   }
   ngOnInit() {
     const storagePath = 'Background/friends-window.jpg';
     this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
-      .subscribe((data: any) => (this.backgroundStorage = `url(${data})`));
+      .subscribe((data: string) => (this.backgroundStorage = `url(${data})`));
   }
 
   ngOnDestroy() {

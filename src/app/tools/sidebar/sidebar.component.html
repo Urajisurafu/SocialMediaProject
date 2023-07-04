@@ -4,7 +4,7 @@
     Home
   </mat-toolbar>
 
-  <mat-toolbar (click)="newsClick()" color="primary"
+  <mat-toolbar color="primary" [matMenuTriggerFor]="menuNews"
     ><mat-icon>newspaper</mat-icon>
     News
   </mat-toolbar>
@@ -30,6 +30,11 @@
     <mat-icon>settings</mat-icon>
     Settings
   </mat-toolbar>
+
+  <mat-menu #menuNews="matMenu">
+    <button mat-menu-item (click)="newsClick()">All news</button>
+    <button mat-menu-item (click)="friendsPostsClick()">Friends news</button>
+  </mat-menu>
 
   <mat-menu #menuNotifications="matMenu">
     <button mat-menu-item (click)="newFriendsClick()">

@@ -1,6 +1,14 @@
 <div class="news-line" [style.background-image]="backgroundStorage">
   <div class="post-feed">
-    <app-post *ngFor="let post of getPosts()" [postData]="post"></app-post>
+    <ng-container *ngIf="postsGroup === 'allPosts'">
+      <app-post *ngFor="let post of getPosts()" [postData]="post"></app-post>
+    </ng-container>
+    <ng-container *ngIf="postsGroup === 'friendsPosts'">
+      <app-post
+        *ngFor="let post of getPostsFriends()"
+        [postData]="post"
+      ></app-post>
+    </ng-container>
   </div>
   <button
     mat-fab

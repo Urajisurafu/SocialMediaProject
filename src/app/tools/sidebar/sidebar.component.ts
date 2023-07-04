@@ -96,15 +96,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   newsClick() {
-    this.router.navigate(['postFeed']);
+    this.router.navigate(['postFeed', { postsGroup: 'allPosts' }]);
+  }
+
+  friendsPostsClick() {
+    this.router.navigate(['postFeed', { postsGroup: 'friendsPosts' }]);
   }
 
   friendsClick() {
-    this.router.navigate(['yourFriends']);
+    this.router.navigate(['yourFriends', { friendsGroup: 'friends' }]);
   }
 
   newFriendsClick() {
-    this.router.navigate(['yourFriends', { selectedIndex: 1 }]);
+    this.router.navigate(['yourFriends', { friendsGroup: 'newFriends' }]);
   }
 
   newLikesClick() {

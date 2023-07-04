@@ -12,7 +12,7 @@ import { NotificationsService } from '../../services/notifications.service';
   styleUrls: ['./friends-info-window.component.scss'],
 })
 export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
-  @Input() selectedIndex?: number = 0;
+  @Input() friendsGroup?: string = 'Friends';
 
   private yourCurrentFriendsInfo: Subscription | undefined;
   private yourNotificationFriends: Subscription | undefined;
@@ -31,6 +31,14 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.yourCurrentFriendsInfo?.unsubscribe();
     this.yourNotificationFriends?.unsubscribe();
+  }
+
+  checkIndex() {
+    if (this.friendsGroup === 'newFriends') {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
   getListOfFriends() {

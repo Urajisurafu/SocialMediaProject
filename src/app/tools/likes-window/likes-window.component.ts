@@ -9,6 +9,7 @@ import { UserDataService } from '../../services/user-data.service';
 import { LikesWindowService } from '../../services/likes-window.service';
 
 import { PostWindowComponent } from '../post-window/post-window.component';
+import { InfoModalComponent } from '../info-modal/info-modal.component';
 
 import { UserNotificationLikes } from '../../interfaces/user-data.interface';
 import { PostData } from '../../interfaces/post-data.interface';
@@ -20,6 +21,7 @@ import { PostData } from '../../interfaces/post-data.interface';
 })
 export class LikesWindowComponent implements OnInit, OnDestroy {
   private likesWindowServiceSubscription: Subscription | undefined;
+  private dialogRefSubscription: Subscription | undefined;
 
   selectedUsers: UserNotificationLikes[] = [];
   constructor(
@@ -37,6 +39,7 @@ export class LikesWindowComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.likesWindowServiceSubscription)
       this.likesWindowServiceSubscription.unsubscribe();
+    if (this.dialogRefSubscription) this.dialogRefSubscription.unsubscribe();
   }
 
   async delayUntilUserInfo() {
@@ -54,12 +57,29 @@ export class LikesWindowComponent implements OnInit, OnDestroy {
   }
 
   deleteSelectedLikes() {
-    this.selectedUsers.forEach((user) => {
-      this.notificationsService.deleteCheckedNotificationLike(
-        user.notificationLikeId
-      );
-      this.selectedUsers = [];
-    });
+    if (this.selectedUsers.length > 0) {
+      const dialogRef = this.dialog.open(InfoModalComponent, {
+        data: {
+          info: 'Removing notifications',
+          message: 'Do you really want to delete the selected notifications?',
+          addButton: true,
+          nameButton: 'Yes',
+        },
+      });
+
+      this.dialogRefSubscription = dialogRef
+        .afterClosed()
+        .subscribe((result) => {
+          if (result) {
+            this.selectedUsers.forEach((user) => {
+              this.notificationsService.deleteCheckedNotificationLike(
+                user.notificationLikeId
+              );
+              this.selectedUsers = [];
+            });
+          }
+        });
+    }
   }
 
   getNotificationLikesList() {

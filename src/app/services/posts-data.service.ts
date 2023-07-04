@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { forkJoin, map, switchMap } from 'rxjs';
 
 import {
   AngularFirestore,
@@ -9,27 +10,31 @@ import { UserDataService } from './user-data.service';
 import { UserPageService } from './user-page.service';
 
 import { PostData } from '../interfaces/post-data.interface';
+import { UserData } from '../interfaces/user-data.interface';
 
 @Injectable()
 export class PostsDataService {
   posts: PostData[] = [];
+  sortedPostsFriends: PostData[] = [];
   pageSize = 5;
   lastVisibleDoc: any;
   postsSize!: number;
   currentSize = 0;
-  private collection: AngularFirestoreCollection<PostData>;
+  private collectionPosts: AngularFirestoreCollection<PostData>;
+  private collectionUsers: AngularFirestoreCollection<UserData>;
   constructor(
     private firestore: AngularFirestore,
     private userDataService: UserDataService,
     private mainUserPageService: UserPageService
   ) {
-    this.collection = this.firestore.collection<PostData>('Posts');
+    this.collectionPosts = this.firestore.collection<PostData>('Posts');
+    this.collectionUsers = this.firestore.collection<UserData>('Users');
   }
 
   uploadPost(comment: string) {
     const postId = this.firestore.createId();
     const creatorId = this.userDataService.getCurrentUserId();
-    return this.collection
+    return this.collectionPosts
       .doc(postId)
       .set({
         comment: comment,
@@ -44,7 +49,7 @@ export class PostsDataService {
 
   uploadImagePost(postId: string, comment: string, url: string) {
     const creatorId = this.userDataService.getCurrentUserId();
-    return this.collection
+    return this.collectionPosts
       .doc(postId)
       .set({
         comment: comment,
@@ -59,7 +64,7 @@ export class PostsDataService {
   }
 
   deleteUserPosts() {
-    this.collection.get().subscribe((querySnapshot) => {
+    this.collectionPosts.get().subscribe((querySnapshot) => {
       querySnapshot.forEach((documentSnapshot) => {
         const data = documentSnapshot.data();
         const documentId = documentSnapshot.id;
@@ -68,7 +73,7 @@ export class PostsDataService {
           this.deleteCollection(documentId, 'Likes');
           this.deleteCollection(documentId, 'PostComments');
 
-          this.collection
+          this.collectionPosts
             .doc(documentId)
             .delete()
             .then(() => {})
@@ -86,7 +91,7 @@ export class PostsDataService {
   deleteCollection(documentId: string, collection: string) {
     const batch = this.firestore.firestore.batch();
 
-    this.collection
+    this.collectionPosts
       .doc(documentId)
       .collection(collection)
       .ref.get()
@@ -99,8 +104,62 @@ export class PostsDataService {
       });
   }
 
+  getFriendsPosts() {
+    const yourId = this.userDataService.getCurrentUserId();
+
+    return this.collectionUsers
+      .doc(yourId)
+      .collection('UserFriends', (ref) => ref.where('isFriend', '==', true))
+      .get()
+      .pipe(
+        switchMap((querySnapshot) => {
+          const friendIds = querySnapshot.docs.map(
+            (doc) => doc.data()['friendId']
+          );
+          const friendRequests = friendIds.map((friendId) =>
+            this.collectionUsers.doc(friendId).collection('UserPosts').get()
+          );
+          const yourPostsRequest = this.collectionUsers
+            .doc(yourId)
+            .collection('UserPosts')
+            .get();
+          return forkJoin([...friendRequests, yourPostsRequest]);
+        }),
+        map((results) => {
+          const mergedResults: any[] = [];
+          results.forEach((querySnapshot) => {
+            querySnapshot.docs.forEach((doc) => {
+              mergedResults.push(doc.data());
+            });
+          });
+          return mergedResults;
+        }),
+        switchMap((mergedResults) => {
+          const postIds = mergedResults.map((result) => result.postId);
+          const postRequests = postIds.map((postId) =>
+            this.collectionPosts.doc(postId).get()
+          );
+          return forkJoin(postRequests);
+        }),
+        map((postSnapshots) =>
+          postSnapshots.map((snapshot) => snapshot.data())
+        ),
+        map((posts) =>
+          posts.sort(
+            (postA, postB) =>
+              postB?.timestamp.toDate() - postA?.timestamp.toDate()
+          )
+        )
+      )
+      .subscribe((sortedPostsFriends) => {
+        this.sortedPostsFriends = sortedPostsFriends.filter(
+          (post) => post !== undefined
+        ) as PostData[];
+      });
+  }
+
   getCountOfDocuments() {
-    this.collection.ref.get().then((querySnapshot) => {
+    this.collectionPosts.ref.get().then((querySnapshot) => {
       this.postsSize = querySnapshot.size;
     });
   }

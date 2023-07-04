@@ -16,6 +16,6 @@ export class InformationLikesComponent implements OnInit {
     const storagePath = 'Background/likes-page.jpg';
     this.storageSubscription = this.storageService
       .getDataFromStorage(storagePath)
-      .subscribe((data: any) => (this.backgroundStorage = `url(${data})`));
+      .subscribe((data: string) => (this.backgroundStorage = `url(${data})`));
   }
 }

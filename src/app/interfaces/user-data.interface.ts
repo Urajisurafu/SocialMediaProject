@@ -4,7 +4,7 @@ export interface UserData {
   description: string;
   publicName: string;
   userId: string;
-  timestamp: Date | string;
+  timestamp: any;
   imageUrl?: string;
 }
 

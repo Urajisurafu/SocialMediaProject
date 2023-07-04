@@ -54,9 +54,13 @@ export class FriendsWindowService {
         return forkJoin(requests);
       }),
       map((results) => results.map((snapshot) => snapshot.data())),
-      filter((user) => user !== undefined),
       tap((users) => {
-        this.listOfFriends = users as UserData[];
+        this.listOfFriends = users.filter(
+          (user): user is UserData => user !== undefined
+        );
+        this.listOfFriends.sort((a, b) =>
+          a.publicName.localeCompare(b.publicName)
+        );
       })
     );
   }
