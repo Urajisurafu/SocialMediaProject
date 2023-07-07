@@ -26,7 +26,7 @@ export class LikesWindowComponent implements OnInit, OnDestroy {
   selectedUsers: UserNotificationLikes[] = [];
   constructor(
     private userPageService: UserPageService,
-    private likesWindowService: LikesWindowService,
+    public likesWindowService: LikesWindowService,
     private userDataService: UserDataService,
     private notificationsService: NotificationsService,
     private dialog: MatDialog
@@ -42,7 +42,7 @@ export class LikesWindowComponent implements OnInit, OnDestroy {
     if (this.dialogRefSubscription) this.dialogRefSubscription.unsubscribe();
   }
 
-  async delayUntilUserInfo() {
+  private async delayUntilUserInfo() {
     if (!this.userDataService.userInfo?.userId) {
       await new Promise((resolve) => {
         setTimeout(resolve, 100);

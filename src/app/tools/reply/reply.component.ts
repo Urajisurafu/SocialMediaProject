@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { UserDataService } from '../../services/user-data.service';
 import { ReplyService } from '../../services/reply.service';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -27,8 +26,7 @@ export class ReplyComponent implements OnInit {
   selectedComment!: CommentData;
   constructor(
     @Inject(MAT_DIALOG_DATA) public postId: string,
-    private userDataService: UserDataService,
-    private replyService: ReplyService
+    public replyService: ReplyService
   ) {
     this.replyForm = new FormGroup({
       comment: new FormControl('', [Validators.required]),

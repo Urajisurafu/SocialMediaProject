@@ -34,7 +34,7 @@ import { PostsDataService } from '../../services/posts-data.service';
   styleUrls: ['./create-post.component.scss'],
 })
 export class CreatePostComponent implements OnDestroy {
-  selectedImageFile!: File;
+  selectedImageFile!: File | null;
   createPostForm: FormGroup;
   uploadImagePostSubscription: Subscription | undefined;
 

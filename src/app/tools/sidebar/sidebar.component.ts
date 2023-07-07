@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { UserDataService } from '../../services/user-data.service';
-
 import { NotificationsService } from '../../services/notifications.service';
 
 import { ChangeDataModalComponent } from '../change-data-modal/change-data-modal.component';
@@ -39,7 +38,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  async delayUntilUserInfo() {
+  private async delayUntilUserInfo() {
     if (!this.userDataService.userInfo?.userId) {
       await new Promise((resolve) => {
         setTimeout(resolve, 100);

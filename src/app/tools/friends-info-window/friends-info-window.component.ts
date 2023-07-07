@@ -18,7 +18,7 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
   private yourNotificationFriends: Subscription | undefined;
 
   constructor(
-    private friendsWindowService: FriendsWindowService,
+    public friendsWindowService: FriendsWindowService,
     private userDataService: UserDataService,
     private userPageService: UserPageService,
     private notificationsService: NotificationsService
@@ -63,23 +63,6 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
     return;
   }
 
-  async delayUntilUserInfo() {
-    if (!this.userDataService.userInfo?.userId) {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 100);
-      });
-
-      await this.delayUntilUserInfo();
-    } else {
-      this.yourCurrentFriendsInfo = this.friendsWindowService
-        .getYourCurrentFriendsInfo()
-        .subscribe();
-      this.yourNotificationFriends = this.friendsWindowService
-        .getYourNotificationFriends()
-        .subscribe();
-    }
-  }
-
   deleteFriendClick(friendId: string) {
     this.userPageService.deleteFriend(friendId);
   }
@@ -96,5 +79,22 @@ export class FriendsInfoWindowComponent implements OnInit, OnDestroy {
 
   goToFriendPageClick(creatorId: string) {
     this.userPageService.goToFriendPage(creatorId);
+  }
+
+  private async delayUntilUserInfo() {
+    if (!this.userDataService.userInfo?.userId) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 100);
+      });
+
+      await this.delayUntilUserInfo();
+    } else {
+      this.yourCurrentFriendsInfo = this.friendsWindowService
+        .getYourCurrentFriendsInfo()
+        .subscribe();
+      this.yourNotificationFriends = this.friendsWindowService
+        .getYourNotificationFriends()
+        .subscribe();
+    }
   }
 }

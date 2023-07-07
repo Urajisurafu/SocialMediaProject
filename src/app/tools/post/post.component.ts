@@ -27,8 +27,8 @@ export class PostComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private userDataService: UserDataService,
-    private postService: PostService,
-    private mainUserPageService: UserPageService
+    public postService: PostService,
+    private userPageService: UserPageService
   ) {}
 
   ngOnInit() {
@@ -100,6 +100,6 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   goToFriendPageClick() {
-    this.mainUserPageService.goToFriendPage(this.postData.creatorId);
+    this.userPageService.goToFriendPage(this.postData.creatorId);
   }
 }
