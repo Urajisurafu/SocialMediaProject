@@ -9,6 +9,7 @@ import { UserDataService } from './user-data.service';
 import { NotificationsService } from './notifications.service';
 
 import { UserData } from '../interfaces/user-data.interface';
+
 import { Friend } from '../interfaces/friends-window.interface';
 
 @Injectable({ providedIn: 'root' })

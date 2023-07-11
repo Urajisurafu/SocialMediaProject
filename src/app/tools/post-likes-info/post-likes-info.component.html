@@ -1,0 +1,9 @@
+<div
+  (click)="openLikesClick()"
+  [ngClass]="{ 'info-window': true, 'more-users': users.length <= 3 }"
+>
+  <div *ngFor="let user of users.slice(0, 3)">
+    <img class="avatar" src="{{ user.imageUrl }}" />
+  </div>
+  <div *ngIf="users.length > 3" class="text">...</div>
+</div>

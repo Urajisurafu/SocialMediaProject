@@ -1,0 +1,19 @@
+<mat-card class="likes-window">
+  <mat-card-header class="likes-header">
+    <div>Liked</div>
+  </mat-card-header>
+
+  <mat-card-content class="likes-content">
+    <div
+      *ngFor="let user of users.users; let i = index"
+      class="likes-content-item"
+      [ngClass]="{ even: i % 2 === 0, odd: i % 2 !== 0 }"
+      (click)="goToFriendPageClick(user.userId)"
+    >
+      <div class="item-name">
+        <img class="item-avatar" src="{{ user.imageUrl }}" alt="User photo" />
+        <div>{{ user.publicName }}</div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

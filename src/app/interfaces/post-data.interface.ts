@@ -9,5 +9,5 @@ export interface PostData {
 export interface LikeInterface {
   creatorId: string;
   likeId: string;
-  timestamp: Date;
+  timestamp: any;
 }

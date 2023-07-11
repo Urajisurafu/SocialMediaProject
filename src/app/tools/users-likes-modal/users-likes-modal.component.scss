@@ -1,0 +1,68 @@
+.likes-window{
+  min-width: 30vw;
+  background-color: #b4b4b4;
+}
+
+.likes-header{
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.likes-content{
+  max-height: 470px;
+  overflow-y: auto;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: white;
+  min-height: 400px;
+
+  &-no-invite{
+    font-family: Bradley Hand, cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  &-item{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+  &-item:hover{
+    color: #f44336;
+  }
+
+  .item-avatar{
+    font-size: 10px;
+    background-color: white;
+    margin: 5px 10px 0 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid #000000;
+    box-shadow: 0 0 7px #666;
+    object-fit: cover;
+  }
+
+  .item-name{
+    display: flex;
+    align-items: center;
+  }
+
+  .even {
+    background-color: lightgray;
+  }
+
+  .odd {
+    background-color: #e5e5e5;
+  }
+}
+
+.mat-mdc-card-content:last-child{
+  padding: 0;
+}

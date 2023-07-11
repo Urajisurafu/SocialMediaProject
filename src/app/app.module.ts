@@ -31,6 +31,9 @@ import { ChangeDataModalComponent } from './tools/change-data-modal/change-data-
 import { NavbarComponent } from './tools/navbar/navbar.component';
 import { CommentComponent } from './tools/comment/comment.component';
 import { PostWindowComponent } from './tools/post-window/post-window.component';
+import { PostLikesInfoComponent } from './tools/post-likes-info/post-likes-info.component';
+import { UserPageModule } from './modules/user-page/user-page.module';
+import { UsersLikesModalComponent } from './tools/users-likes-modal/users-likes-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,9 @@ import { PostWindowComponent } from './tools/post-window/post-window.component';
     NavbarComponent,
     CommentComponent,
     PostWindowComponent,
+    PostLikesInfoComponent,
+    PostLikesInfoComponent,
+    UsersLikesModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +67,7 @@ import { PostWindowComponent } from './tools/post-window/post-window.component';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
+    UserPageModule,
   ],
   providers: [UserDataService, PostsDataService],
   bootstrap: [AppComponent],

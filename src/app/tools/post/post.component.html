@@ -20,11 +20,22 @@
     <mat-icon (click)="onReplyClick()" class="action-item" color="warn">
       chat_bubble_outline
     </mat-icon>
-    <div class="likes">
+    <div
+      class="likes"
+      (mouseenter)="showInfoWindow()"
+      (mouseleave)="startHideInfoWindowTimer()"
+      (mouseenter)="resetHideInfoWindowTimer()"
+    >
       <mat-icon (click)="onLikeClick()" class="action-item" color="warn">
-        {{ getIsLiked() ? "favorite" : "favorite_border" }}favorite_border
+        {{ getIsLiked() ? "favorite" : "favorite_border" }}
       </mat-icon>
       <div class="likes-number">{{ getLikes() }}</div>
+      <app-post-likes-info
+        class="app-post-likes-info"
+        [ngClass]="{ visible: isInfoWindow }"
+        [users]="users"
+        [postId]="postData.postId"
+      ></app-post-likes-info>
     </div>
     <mat-icon
       *ngIf="postData.imageUrl"

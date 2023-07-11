@@ -55,3 +55,12 @@
     justify-content: center;
   }
 }
+
+app-post-likes-info {
+  transition: opacity 0.3s ease-in-out;
+  display: none;
+}
+
+app-post-likes-info.visible {
+  display: block;
+}

@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { UserData } from '../interfaces/user-data.interface';
-import { LikeInterface, PostData } from '../interfaces/post-data.interface';
+
 import { UserDataService } from './user-data.service';
-import { Observable } from 'rxjs';
 import { PostsDataService } from './posts-data.service';
 import { UserPageService } from './user-page.service';
 import { NotificationsService } from './notifications.service';
+
+import { LikeInterface, PostData } from '../interfaces/post-data.interface';
+import { UserData } from '../interfaces/user-data.interface';
 
 @Injectable()
 export class PostService {
@@ -166,6 +168,24 @@ export class PostService {
           }
         });
       }
+    );
+  }
+
+  getUsersLikes(postId: string) {
+    const collectionPath2 = 'Likes';
+
+    return this.listenToDocumentValueChanges(postId, collectionPath2).pipe(
+      switchMap((mergedResults) => {
+        const users = mergedResults.sort(
+          (userA, userB) => userB?.timestamp - userA?.timestamp
+        );
+        const usersIds = users.map((result) => result.creatorId);
+        const usersRequests = usersIds.map((userId) =>
+          this.collectionUsers.doc(userId).get()
+        );
+        return forkJoin(usersRequests);
+      }),
+      map((userSnapshots) => userSnapshots.map((snapshot) => snapshot.data()))
     );
   }
 

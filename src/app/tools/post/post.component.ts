@@ -12,6 +12,7 @@ import { InfoModalComponent } from '../info-modal/info-modal.component';
 import { ReplyComponent } from '../reply/reply.component';
 
 import { PostData } from '../../interfaces/post-data.interface';
+import { UserData } from '../../interfaces/user-data.interface';
 
 @Component({
   selector: 'app-post',
@@ -23,6 +24,12 @@ export class PostComponent implements OnInit, OnDestroy {
   @Input() postData!: PostData;
 
   private dialogRefSubscription: Subscription | undefined;
+  private usersLikesSubscription: Subscription | undefined;
+
+  users: UserData[] = [];
+  isInfoWindow = false;
+  hideInfoWindowTimeout: any;
+  delayBeforeHide: number = 1000;
 
   constructor(
     private dialog: MatDialog,
@@ -34,12 +41,41 @@ export class PostComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.postService.getCreatorInfo(this.postData);
     this.postService.getLikes(this.postData.postId);
+    this.usersLikesSubscription = this.postService
+      .getUsersLikes(this.postData.postId)
+      .subscribe((data) => {
+        this.users = data.filter((user) => user !== undefined) as UserData[];
+      });
   }
 
   ngOnDestroy() {
     if (this.dialogRefSubscription) {
       this.dialogRefSubscription.unsubscribe();
     }
+
+    if (this.usersLikesSubscription) {
+      this.usersLikesSubscription.unsubscribe();
+    }
+  }
+
+  showInfoWindow() {
+    this.isInfoWindow = true;
+  }
+
+  startHideInfoWindowTimer() {
+    clearTimeout(this.hideInfoWindowTimeout);
+
+    this.hideInfoWindowTimeout = setTimeout(() => {
+      this.hideInfoWindow();
+    }, this.delayBeforeHide);
+  }
+
+  resetHideInfoWindowTimer() {
+    clearTimeout(this.hideInfoWindowTimeout);
+  }
+
+  hideInfoWindow() {
+    this.isInfoWindow = false;
   }
 
   getDate() {
