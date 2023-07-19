@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { UserData } from '../../interfaces/user-data.interface';
+
+import { MatDialog } from '@angular/material/dialog';
 
 import { UsersLikesModalComponent } from '../users-likes-modal/users-likes-modal.component';
-import { MatDialog } from '@angular/material/dialog';
+
+import { UserData } from '../../interfaces/user-data.interface';
 
 @Component({
   selector: 'app-post-likes-info',

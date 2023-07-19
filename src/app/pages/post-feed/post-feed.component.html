@@ -1,5 +1,59 @@
 <div class="news-line" [style.background-image]="backgroundStorage">
   <div class="post-feed">
+    <div class="form-field">
+      <mat-form-field>
+        <input matInput placeholder="Введите текст" [(ngModel)]="searchPost" />
+      </mat-form-field>
+
+      <mat-form-field *ngIf="postsGroup === 'friendsPosts'">
+        <input
+          type="text"
+          placeholder="Select User"
+          matInput
+          [matAutocomplete]="friendsPosts"
+          [(ngModel)]="searchTextFriends"
+          (input)="filterFriends()"
+        />
+        <mat-autocomplete #friendsPosts="matAutocomplete">
+          <mat-option
+            *ngFor="let item of filteredFriends"
+            [value]="item.publicName"
+            class="select-user option-container"
+            (click)="setSelectedFriend(item)"
+          >
+            <div class="flex-container">
+              <img class="avatar" src="{{ item.imageUrl }}" alt="User photo" />
+              <div>{{ item.publicName }}</div>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="postsGroup === 'allPosts'">
+        <input
+          type="text"
+          placeholder="Select User"
+          matInput
+          [matAutocomplete]="allPosts"
+          [(ngModel)]="searchTextUsers"
+          (input)="filterAllUsers()"
+        />
+        <mat-autocomplete #allPosts="matAutocomplete">
+          <mat-option
+            *ngFor="let item of filteredUsers"
+            [value]="item.publicName"
+            class="select-user option-container"
+            (click)="setSelectedUser(item)"
+          >
+            <div class="flex-container">
+              <img class="avatar" src="{{ item.imageUrl }}" alt="User photo" />
+              <div>{{ item.publicName }}</div>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
     <ng-container *ngIf="postsGroup === 'allPosts'">
       <app-post *ngFor="let post of getPosts()" [postData]="post"></app-post>
     </ng-container>

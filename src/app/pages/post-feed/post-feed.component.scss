@@ -19,3 +19,30 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.option-container {
+  display: flex;
+  align-items: center;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.avatar {
+  margin-right: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid #000000;
+  box-shadow: 0 0 7px #666;
+  object-fit: cover;
+}
+
+.form-field{
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}

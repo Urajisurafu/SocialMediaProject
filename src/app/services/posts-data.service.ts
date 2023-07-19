@@ -63,6 +63,40 @@ export class PostsDataService {
       });
   }
 
+  getFriendPosts(friendId: string) {
+    const userPostsCollectionRef = this.collectionUsers
+      .doc(friendId)
+      .collection('UserPosts')
+      .valueChanges();
+
+    return userPostsCollectionRef.pipe(
+      switchMap((querySnapshot) => {
+        const postDocObservables = querySnapshot.map((userPostDoc) => {
+          const postId = userPostDoc['postId'];
+          const postDocRef = this.collectionPosts.doc(postId);
+          return postDocRef.get();
+        });
+
+        return forkJoin(postDocObservables);
+      }),
+      map((postDocs) => {
+        const posts = postDocs.map((postDoc) => {
+          if (postDoc.exists) {
+            return postDoc.data();
+          } else {
+            return null;
+          }
+        });
+
+        return posts
+          .filter((post) => post !== null)
+          .sort((a, b) => {
+            return b!.timestamp - a!.timestamp;
+          });
+      })
+    );
+  }
+
   deleteUserPosts() {
     this.collectionPosts.get().subscribe((querySnapshot) => {
       querySnapshot.forEach((documentSnapshot) => {

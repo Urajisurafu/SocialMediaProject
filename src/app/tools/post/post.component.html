@@ -31,6 +31,7 @@
       </mat-icon>
       <div class="likes-number">{{ getLikes() }}</div>
       <app-post-likes-info
+        *ngIf="getLikes() > 0"
         class="app-post-likes-info"
         [ngClass]="{ visible: isInfoWindow }"
         [users]="users"

@@ -31,6 +31,10 @@ export class UserDataService {
     this.userInfo = {} as UserData;
   }
 
+  getAllUsers() {
+    return this.collection.ref.get();
+  }
+
   getUpdatedUserProfile() {
     this.afAuth.currentUser
       .then((user) => {

@@ -1,7 +1,10 @@
 import { Component, Inject } from '@angular/core';
+
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { UserData } from '../../interfaces/user-data.interface';
+
 import { UserPageService } from '../../services/user-page.service';
+
+import { UserData } from '../../interfaces/user-data.interface';
 
 @Component({
   selector: 'app-users-likes-modal',

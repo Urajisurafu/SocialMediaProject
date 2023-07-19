@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -68,6 +68,7 @@ import { UsersLikesModalComponent } from './tools/users-likes-modal/users-likes-
     HttpClientModule,
     MaterialModule,
     UserPageModule,
+    FormsModule,
   ],
   providers: [UserDataService, PostsDataService],
   bootstrap: [AppComponent],
