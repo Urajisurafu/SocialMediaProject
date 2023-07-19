@@ -24,6 +24,8 @@ import { PostData } from '../../interfaces/post-data.interface';
 export class PostFeedComponent implements OnInit, OnDestroy {
   private storageSubscription: Subscription | undefined;
   private postsGroupSubscription: Subscription | undefined;
+  private currentFriendsInfoSubscription: Subscription | undefined;
+
   limit: number = 3;
   backgroundStorage: string = '';
   postsGroup!: string;
@@ -69,6 +71,9 @@ export class PostFeedComponent implements OnInit, OnDestroy {
     if (this.postsGroupSubscription) {
       this.postsGroupSubscription.unsubscribe();
     }
+    if (this.currentFriendsInfoSubscription) {
+      this.currentFriendsInfoSubscription.unsubscribe();
+    }
   }
 
   private async delayUntilUserInfo() {
@@ -79,7 +84,7 @@ export class PostFeedComponent implements OnInit, OnDestroy {
 
       await this.delayUntilUserInfo();
     } else {
-      this.friendsWindowService
+      this.currentFriendsInfoSubscription = this.friendsWindowService
         .getYourCurrentFriendsInfo()
         .subscribe((data) => {
           let listOfFriends = data.filter(

@@ -2,7 +2,11 @@
   <div class="post-feed">
     <div class="form-field">
       <mat-form-field>
-        <input matInput placeholder="Введите текст" [(ngModel)]="searchPost" />
+        <input
+          matInput
+          placeholder="Enter search text"
+          [(ngModel)]="searchPost"
+        />
       </mat-form-field>
 
       <mat-form-field *ngIf="postsGroup === 'friendsPosts'">
